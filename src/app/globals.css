@@ -1,0 +1,234 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ===========================
+   PALETA ROXA — TOKENS GLOBAIS
+   =========================== */
+:root {
+  --bg:          #f4f6f9;       /* azul acinzentado muito claro */
+  --bg-card:     #ffffff;
+  --primary:     #0056B3;       /* azul royal */
+  --primary-lt:  #e6f0fa;       /* azul royal muito claro */
+  --primary-md:  #5987c0;       /* azul intermediário */
+  --primary-dk:  #1B365D;       /* azul marinho escuro */
+  --sidebar-bg:  #1B365D;       /* azul marinho */
+  --sidebar-act: #0056B3;       /* active item (azul royal) */
+  --text-main:   #1B365D;       /* azul marinho principal */
+  --text-muted:  #64748b;
+  --border:      #e6f0fa;       /* azul royal muito claro */
+  --emerald:     #00A859;       /* verde bandeira */
+  --amber:       #F26522;       /* laranja vibrante */
+  --rose:        #f43f5e;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text-main);
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ===========================
+   ANIMAÇÕES GLOBAIS
+   =========================== */
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.92); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(0,86,179,0); }
+  50%       { box-shadow: 0 0 0 8px rgba(0,86,179,0.15); }
+}
+
+@keyframes pulseGlowEmerald {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(16,185,129,0); }
+  50%       { box-shadow: 0 0 0 8px rgba(16,185,129,0.2); }
+}
+
+@keyframes pulseGlowRose {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(244,63,94,0); }
+  50%       { box-shadow: 0 0 0 8px rgba(244,63,94,0.2); }
+}
+
+@keyframes countUp {
+  from { transform: translateY(10px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes ping {
+  75%, 100% { transform: scale(2); opacity: 0; }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(-10%); animation-timing-function: cubic-bezier(0.8,0,1,1); }
+  50%       { transform: none;            animation-timing-function: cubic-bezier(0,0,0.2,1); }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+
+@keyframes celebrate {
+  0%   { transform: scale(1)    rotate(0deg); }
+  25%  { transform: scale(1.15) rotate(-3deg); }
+  50%  { transform: scale(1.2)  rotate(3deg); }
+  75%  { transform: scale(1.1)  rotate(-2deg); }
+  100% { transform: scale(1)    rotate(0deg); }
+}
+
+/* ===========================
+   CLASSES UTILITÁRIAS
+   =========================== */
+
+.animate-fadeIn     { animation: fadeIn  0.35s ease-out both; }
+.animate-slideUp    { animation: slideUp 0.4s  ease-out both; }
+.animate-slideDown  { animation: slideDown 0.3s ease-out both; }
+.animate-scaleIn    { animation: scaleIn 0.3s  ease-out both; }
+.animate-celebrate  { animation: celebrate 0.6s ease-in-out both; }
+.animate-spin       { animation: spin 1s linear infinite; }
+
+/* Delay helpers */
+.delay-100 { animation-delay: 0.1s; }
+.delay-200 { animation-delay: 0.2s; }
+.delay-300 { animation-delay: 0.3s; }
+.delay-400 { animation-delay: 0.4s; }
+.delay-500 { animation-delay: 0.5s; }
+
+/* ===========================
+   GLASS MORPHISM
+   =========================== */
+
+.glass-card {
+  background: rgba(255,255,255,0.8);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(230,240,250,0.7);
+}
+
+.glass-dark {
+  background: rgba(27,54,93,0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+/* ===========================
+   SIDEBAR NAV
+   =========================== */
+
+.sidebar-purple {
+  background: var(--sidebar-bg);
+}
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-radius: 1rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #bcd0e6;
+  transition: all 0.2s;
+}
+
+.sidebar-link:hover {
+  background: rgba(0,86,179,0.15);
+  color: #fff;
+}
+
+.sidebar-link.active {
+  background: var(--primary);
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(0,86,179,0.4);
+}
+
+/* ===========================
+   SEARCH BAR
+   =========================== */
+
+.search-bar {
+  background: #f0f4f8;
+  border: 1.5px solid #e6f0fa;
+  border-radius: 9999px;
+  transition: all 0.2s;
+}
+
+.search-bar:focus-within {
+  border-color: #0056B3;
+  box-shadow: 0 0 0 3px rgba(0,86,179,0.12);
+}
+
+/* ===========================
+   PWA BOTTOM NAV
+   =========================== */
+
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  background: rgba(255,255,255,0.97);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid #e6f0fa;
+  box-shadow: 0 -4px 24px rgba(0,86,179,0.06);
+}
+
+/* ===========================
+   SHIMMER SKELETON
+   =========================== */
+
+.shimmer {
+  background: linear-gradient(90deg, #f0f4f8 25%, #e6f0fa 50%, #f0f4f8 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+}
+
+/* ===========================
+   SCROLLBAR STYLING
+   =========================== */
+
+::-webkit-scrollbar        { width: 4px; height: 4px; }
+::-webkit-scrollbar-track  { background: transparent; }
+::-webkit-scrollbar-thumb  { background: #bcd0e6; border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: #0056B3; }
+
+/* ===========================
+   LEAFLET DARK TOOLTIP OVERRIDE
+   =========================== */
+.leaflet-tooltip-dark {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
