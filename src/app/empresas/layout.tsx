@@ -27,7 +27,7 @@ export default function EmpresasLayout({
   const isActive = (path: string) => pathname === path;
 
   const navLinks = [
-    { href: '/empresas/painel', label: 'Candidatos', icon: Users },
+    { href: '/empresas/painel', label: 'Meu Painel', icon: Star },
     { href: '/empresas/vagas',  label: 'Minhas Vagas', icon: Briefcase },
     { href: '/empresas/selos',  label: 'Manual de Selos', icon: Award },
   ];

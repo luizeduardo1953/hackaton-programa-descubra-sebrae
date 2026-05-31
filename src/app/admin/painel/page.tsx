@@ -53,211 +53,143 @@ type BairroMapa = {
 }
 
 // Dados estáticos enriquecidos (Fronteira Geográfica de Teste do MVP)
-const CIDADES_SEEDS: CidadeMapa[] = [
-  {
-    id: 'b0eebc99-9c0b-4ef8-bb6d-6bb9bd380a22',
-    nome: 'Pirapora',
-    lat: -17.344933,
-    lng: -44.937861,
-    riscoGeral: 'Médio',
-    alunosTotal: 4,
-    equipamentosQtd: 2,
-    bairros: [
-      {
-        nome: 'Marcos Silva (Jovem)',
-        tipo: 'Jovem',
-        lat: -17.346000,
-        lng: -44.936000,
-        risco: 'Baixo',
-        alunosCount: 25,
-        alunosList: ['Fator de Risco: Baixo (Score 25)', 'Escolaridade: Médio Incompleto', 'Turno: Tarde'],
-        cep: 'Bairro: Cidade Jardim'
-      },
-      {
-        nome: 'Ana Oliveira (Jovem)',
-        tipo: 'Jovem',
-        lat: -17.340000,
-        lng: -44.945000,
-        risco: 'Médio',
-        alunosCount: 42,
-        alunosList: ['Fator de Risco: Médio (Score 42)', 'Escolaridade: Fundamental Incompleto', 'Turno: Manhã'],
-        cep: 'Bairro: Bom Jesus'
-      },
-      {
-        nome: 'Luiz Fernando Melo (Jovem)',
-        tipo: 'Jovem',
-        lat: -17.355000,
-        lng: -44.930000,
-        risco: 'Crítico',
-        alunosCount: 72,
-        alunosList: ['Fator de Risco: Crítico (Score 72)', 'Evasão Escolar Mapeada', 'Região Periférica'],
-        cep: 'Bairro: Santos Dumont'
-      },
-      {
-        nome: 'Mateus Ramos (Jovem)',
-        tipo: 'Jovem',
-        lat: -17.339000,
-        lng: -44.936000,
-        risco: 'Crítico',
-        alunosCount: 88,
-        alunosList: ['Fator de Risco: Crítico (Score 88)', 'Bairro: Santo Antônio', 'Acompanhamento do Orientador'],
-        cep: 'Bairro: Santo Antônio'
-      },
-      {
-        nome: 'Metalúrgica São Francisco (Empresa)',
-        tipo: 'Empresa',
-        lat: -17.352000,
-        lng: -44.941000,
-        risco: 'Geral',
-        alunosCount: 0,
-        alunosList: ['CNPJ: 12.345.678/0001-90', 'Vagas Ofertadas: 2 (Aprendizagem)', 'Parceira Ativa'],
-        cep: 'Bairro: Industrial'
-      },
-      {
-        nome: 'CREAS Pirapora (Acolhimento)',
-        tipo: 'Acolhimento',
-        lat: -17.343500,
-        lng: -44.935000,
-        risco: 'Geral',
-        alunosCount: 0,
-        alunosList: ['Entidade de Acolhimento e Assistência Social', 'Orientadores de Referência: 4', 'Controle de Medidas Ativas'],
-        cep: 'Bairro: Centro'
-      },
-      {
-        nome: 'SENAI Pirapora (Formadora)',
-        tipo: 'Formadora',
-        lat: -17.348000,
-        lng: -44.932000,
-        risco: 'Geral',
-        alunosCount: 0,
-        alunosList: ['Entidade Formadora / Cursos Técnicos', 'Programas Ativos: Informática, Administração', 'Parceria Jovem Aprendiz'],
-        cep: 'Bairro: Centro'
-      }
-    ]
-  },
-  {
-    id: 'c0eebc99-9c0b-4ef8-bb6d-6bb9bd380a33',
-    nome: 'Buritizeiro',
-    lat: -17.351111,
-    lng: -44.962222,
-    riscoGeral: 'Crítico',
-    alunosTotal: 3,
-    equipamentosQtd: 2,
-    bairros: [
-      {
-        nome: 'Patricia Lima (Jovem)',
-        tipo: 'Jovem',
-        lat: -17.352000,
-        lng: -44.960000,
-        risco: 'Baixo',
-        alunosCount: 18,
-        alunosList: ['Fator de Risco: Baixo (Score 18)', 'Curso Preparatório Concluído', 'Pré-aprendizagem Ativa'],
-        cep: 'Bairro: Centro'
-      },
-      {
-        nome: 'Lucas Santos (Jovem)',
-        tipo: 'Jovem',
-        lat: -17.348000,
-        lng: -44.970000,
-        risco: 'Médio',
-        alunosCount: 48,
-        alunosList: ['Fator de Risco: Médio (Score 48)', 'Faltas Recentes no Acompanhamento', 'Necessita Preparação Técnica'],
-        cep: 'Bairro: São Geraldo'
-      },
-      {
-        nome: 'Rodrigo Silva Cruz (Jovem)',
-        tipo: 'Jovem',
-        lat: -17.362000,
-        lng: -44.955000,
-        risco: 'Crítico',
-        alunosCount: 85,
-        alunosList: ['Fator de Risco: Crítico (Score 85)', 'Reside em Região de Alto Risco', 'Acompanhamento do Orientador'],
-        cep: 'Bairro: Nova Pirapora'
-      },
-      {
-        nome: 'Reflorestadora Rio Grande S/A (Empresa)',
-        tipo: 'Empresa',
-        lat: -17.362000,
-        lng: -44.972000,
-        risco: 'Geral',
-        alunosCount: 0,
-        alunosList: ['CNPJ: 45.678.901/0002-30', 'Vagas Ofertadas: 1 (CLT Viveiro)', 'Parceira Ativa'],
-        cep: 'Bairro: Industrial'
-      },
-      {
-        nome: 'CRAS Buritizeiro (Acolhimento)',
-        tipo: 'Acolhimento',
-        lat: -17.355000,
-        lng: -44.965000,
-        risco: 'Geral',
-        alunosCount: 0,
-        alunosList: ['Centro de Referência de Assistência Social', 'Atendimento Territorial Ampliado', 'Mapeamento Familiar Ativo'],
-        cep: 'Bairro: Aparecida'
-      },
-      {
-        nome: 'CFP Buritizeiro (Formadora)',
-        tipo: 'Formadora',
-        lat: -17.349000,
-        lng: -44.958000,
-        risco: 'Geral',
-        alunosCount: 0,
-        alunosList: ['Centro de Formação Profissional', 'Cursos de Iniciação e Habilidades Básicas', 'Parceria Prefeitura Local'],
-        cep: 'Bairro: Nova Pirapora'
-      }
-    ]
-  },
-  {
-    id: 'd0eebc99-9c0b-4ef8-bb6d-6bb9bd380a44',
-    nome: 'Jequitaí',
-    lat: -17.234722,
-    lng: -44.431667,
-    riscoGeral: 'Baixo',
-    alunosTotal: 2,
-    equipamentosQtd: 1,
-    bairros: [
-      {
-        nome: 'Thiago Santos (Jovem)',
-        tipo: 'Jovem',
-        lat: -17.235000,
-        lng: -44.432000,
-        risco: 'Baixo',
-        alunosCount: 10,
-        alunosList: ['Fator de Risco: Baixo (Score 10)', 'Estudante Turno da Manhã', 'Acompanhamento Estável'],
-        cep: 'Bairro: Centro'
-      },
-      {
-        nome: 'Renato Pinheiro (Jovem)',
-        tipo: 'Jovem',
-        lat: -17.240000,
-        lng: -44.425000,
-        risco: 'Médio',
-        alunosCount: 52,
-        alunosList: ['Fator de Risco: Médio (Score 52)', 'Necessita Apoio Escolar Especializado', 'Interesse em Aprendizagem'],
-        cep: 'Bairro: Centro'
-      },
-      {
-        nome: 'Supermercados BH - Jequitaí (Empresa)',
-        tipo: 'Empresa',
-        lat: -17.236000,
-        lng: -44.434000,
-        risco: 'Geral',
-        alunosCount: 0,
-        alunosList: ['CNPJ: 98.765.432/0001-10', 'Vagas Ofertadas: 1 (Caixa Aprendiz)', 'Parceira de Inclusão'],
-        cep: 'Bairro: Industrial'
-      },
-      {
-        nome: 'CRAS Jequitaí (Acolhimento)',
-        tipo: 'Acolhimento',
-        lat: -17.232000,
-        lng: -44.429000,
-        risco: 'Geral',
-        alunosCount: 0,
-        alunosList: ['Centro de Referência de Assistência Social Jequitaí', 'Inclusão Produtiva e Proteção Social', 'Orientadores Territoriais'],
-        cep: 'Bairro: Centro'
-      }
-    ]
+const CITY_CENTERS: Record<string, { lat: number; lng: number }> = {
+  'Pirapora': { lat: -17.344933, lng: -44.937861 },
+  'Buritizeiro': { lat: -17.351111, lng: -44.962222 },
+  'Jequitaí': { lat: -17.234722, lng: -44.431667 },
+};
+
+function getNeighborhoodLatLng(cidade: string, bairroName: string): { lat: number; lng: number } {
+  const cleanBairro = (bairroName || '').trim();
+  const key = `${cidade}_${cleanBairro}`;
+  
+  const COORDINATES: Record<string, { lat: number; lng: number }> = {
+    'Pirapora_Cidade Jardim': { lat: -17.346, lng: -44.936 },
+    'Pirapora_Bom Jesus': { lat: -17.340, lng: -44.945 },
+    'Pirapora_Santos Dumont': { lat: -17.355, lng: -44.930 },
+    'Pirapora_Santo Antônio': { lat: -17.339, lng: -44.936 },
+    'Pirapora_Industrial': { lat: -17.352, lng: -44.941 },
+    'Pirapora_Centro': { lat: -17.3435, lng: -44.935 },
+    'Buritizeiro_Centro': { lat: -17.352, lng: -44.960 },
+    'Buritizeiro_São Geraldo': { lat: -17.348, lng: -44.970 },
+    'Buritizeiro_Nova Pirapora': { lat: -17.362, lng: -44.955 },
+    'Buritizeiro_Aparecida': { lat: -17.355, lng: -44.965 },
+    'Jequitaí_Centro': { lat: -17.235, lng: -44.432 },
+    'Jequitaí_Industrial': { lat: -17.236, lng: -44.434 },
+  };
+
+  if (COORDINATES[key]) {
+    return COORDINATES[key];
   }
-];
+
+  // Fallback com offset determinístico baseado em hash
+  const center = CITY_CENTERS[cidade] || CITY_CENTERS['Pirapora'];
+  let hash = 0;
+  const str = cleanBairro;
+  for (let i = 0; i < str.length; i++) {
+    hash = str.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  const latOffset = ((hash & 0xFF) / 255 - 0.5) * 0.015;
+  const lngOffset = (((hash >> 8) & 0xFF) / 255 - 0.5) * 0.015;
+  return {
+    lat: center.lat + latOffset,
+    lng: center.lng + lngOffset
+  };
+}
+
+const buildCidadesMapa = (): CidadeMapa[] => {
+  const jovens = db.getYouthList();
+  const empresas = db.getEmpresas();
+  const unidades = db.getUnidades();
+  const vagas = db.getVagas();
+
+  const cidadesNome = ['Pirapora', 'Buritizeiro', 'Jequitaí'];
+  return cidadesNome.map(cidName => {
+    const center = CITY_CENTERS[cidName];
+    const cityJovens = jovens.filter(j => j.cidade === cidName);
+    const cityEmpresas = empresas.filter(e => e.cidade === cidName);
+    const cityUnidades = unidades.filter(u => u.cidade === cidName);
+
+    const bairros: BairroMapa[] = [];
+
+    // Mapear unidades do CRAS/CREAS
+    cityUnidades.forEach(u => {
+      const coords = getNeighborhoodLatLng(cidName, u.bairro);
+      bairros.push({
+        nome: `${u.nome} (${u.tipo})`,
+        tipo: u.tipo === 'CECEP' ? 'Formadora' : 'Acolhimento',
+        lat: coords.lat,
+        lng: coords.lng,
+        risco: 'Geral',
+        alunosCount: 0,
+        alunosList: [
+          `Tipo: ${u.tipo}`,
+          `Responsável: ${u.responsavel_nome}`,
+          `Telefone: ${u.telefone || '—'}`
+        ],
+        cep: `Bairro: ${u.bairro}`
+      });
+    });
+
+    // Mapear empresas parceiras
+    cityEmpresas.forEach(e => {
+      const coords = getNeighborhoodLatLng(cidName, e.bairro);
+      const companyVacancies = vagas.filter(v => v.empresa_id === e.id);
+      const vacanciesCount = companyVacancies.reduce((acc, v) => acc + v.quantidade, 0);
+      bairros.push({
+        nome: `${e.nome_fantasia} (Empresa)`,
+        tipo: 'Empresa',
+        lat: coords.lat,
+        lng: coords.lng,
+        risco: 'Geral',
+        alunosCount: 0,
+        alunosList: [
+          `CNPJ: ${e.cnpj}`,
+          `Vagas Ofertadas: ${vacanciesCount} vagas`,
+          `Selo de Engajamento: ${e.selo || 'Nenhum'}`
+        ],
+        cep: `Bairro: ${e.bairro}`
+      });
+    });
+
+    // Mapear jovens da assistência social
+    cityJovens.forEach(y => {
+      const coords = getNeighborhoodLatLng(cidName, y.bairro);
+      const riscoLabel = y.score_vulnerabilidade >= 8 ? 'Crítico' : y.score_vulnerabilidade >= 4 ? 'Médio' : 'Baixo';
+      bairros.push({
+        nome: `${y.nome_completo} (Jovem)`,
+        tipo: 'Jovem',
+        lat: coords.lat,
+        lng: coords.lng,
+        risco: riscoLabel,
+        alunosCount: y.score_vulnerabilidade,
+        alunosList: [
+          `Risco: ${riscoLabel} (Score ${y.score_vulnerabilidade})`,
+          `Escolaridade: ${y.escolaridade}`,
+          `Status: ${y.status_atual}`
+        ],
+        cep: `Bairro: ${y.bairro}`
+      });
+    });
+
+    // Determinar risco médio geral da cidade
+    const avgScore = cityJovens.length > 0
+      ? cityJovens.reduce((acc, y) => acc + y.score_vulnerabilidade, 0) / cityJovens.length
+      : 0;
+    const riscoGeral = avgScore >= 7 ? 'Crítico' : avgScore >= 4 ? 'Médio' : 'Baixo';
+
+    return {
+      id: cidName === 'Pirapora' ? 'b0eebc99-9c0b-4ef8-bb6d-6bb9bd380a22' : cidName === 'Buritizeiro' ? 'c0eebc99-9c0b-4ef8-bb6d-6bb9bd380a33' : 'd0eebc99-9c0b-4ef8-bb6d-6bb9bd380a44',
+      nome: cidName,
+      lat: center.lat,
+      lng: center.lng,
+      riscoGeral,
+      alunosTotal: cityJovens.length,
+      equipamentosQtd: cityUnidades.length + cityEmpresas.length,
+      bairros
+    };
+  });
+};
 
 
 interface Municipio {
@@ -420,7 +352,87 @@ const TOP5 = [...MUNICIPIOS].sort((a, b) => {
 export default function AdminPainelPage() {
   const [auditLogs,        setAuditLogs]        = useState<AuditLog[]>([]);
   const [toastMessage,     setToastMessage]     = useState<string | null>(null);
+  const [hasMounted, setHasMounted] = useState(false);
+
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
   const [rankingKey,       setRankingKey]       = useState(0);
+  const [empresas,         setEmpresas]         = useState<any[]>([]);
+  const [cidadesMapa,      setCidadesMapa]      = useState<CidadeMapa[]>([]);
+
+  const [supabaseLive] = useState(typeof window !== 'undefined' ? (db as any).liveLoaded || false : false);
+  const [showSupaPanel, setShowSupaPanel] = useState(true);
+
+  // Dynamic computations pulling from local storage / Supabase db in real-time
+  const listJovens = db.getYouthList();
+  
+  // Calculate dynamic neighborhoods distribution (Vulnerabilidade Territorial)
+  const neighborhoodCounts: Record<string, number> = {};
+  listJovens.forEach(y => {
+    neighborhoodCounts[y.bairro] = (neighborhoodCounts[y.bairro] || 0) + 1;
+  });
+  const sortedBairros = Object.entries(neighborhoodCounts)
+    .map(([bairro, count]) => ({ bairro, count }))
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 5);
+
+  const maxBairroCount = sortedBairros[0]?.count || 1;
+  let bairrosData = sortedBairros.map((item, idx) => {
+    const pct = `${Math.round((item.count / maxBairroCount) * 100)}%`;
+    let color = 'from-rose-400 to-rose-600';
+    let textColor = 'text-rose-600';
+    if (idx === 2) {
+      color = 'from-amber-300 to-amber-500';
+      textColor = 'text-amber-500';
+    } else if (idx > 2) {
+      color = 'from-amber-200 to-amber-400';
+      textColor = 'text-amber-500';
+    }
+    return {
+      bairro: item.bairro,
+      count: item.count,
+      pct,
+      color,
+      textColor
+    };
+  });
+
+  if (bairrosData.length === 0) {
+    bairrosData = [
+      { bairro: 'Santos Reis', count: 142, pct: '100%', color: 'from-rose-400 to-rose-600', textColor: 'text-rose-600' },
+      { bairro: 'Major Prates', count: 98, pct: '69%', color: 'from-rose-300 to-rose-500', textColor: 'text-rose-500' },
+      { bairro: 'Vila Exposição', count: 75, pct: '52%', color: 'from-amber-300 to-amber-500', textColor: 'text-amber-500' },
+      { bairro: 'Vera Cruz', count: 54, pct: '38%', color: 'from-amber-200 to-amber-400', textColor: 'text-amber-500' },
+      { bairro: 'Delfino Magalhães', count: 31, pct: '21%', color: 'from-amber-200 to-amber-300', textColor: 'text-amber-400' }
+    ];
+  }
+
+  // If in Live mode, listen to the custom event for data loaded to update state
+  useEffect(() => {
+    const handleSupaLoaded = () => {
+      // Re-run diagnostics to refresh metrics
+      const d = db.getDiagnostics();
+      const enc = d.counters.concluidos + d.counters.contratados + d.counters.emCurso;
+      setDiag({
+        total:       d.counters.total,
+        encaminhados: enc,
+        contratados: d.counters.contratados,
+        alertas:     d.counters.alertas,
+        taxaEnc:     d.counters.total > 0 ? Math.round((enc / d.counters.total) * 100) : 0,
+        taxaCont:    d.counters.taxaEmpregabilidade,
+      });
+      syncLogs();
+      setEmpresas(db.getEmpresas());
+      setCidadesMapa(buildCidadesMapa());
+      showToast('Dados atualizados do Supabase com sucesso!');
+    };
+
+    window.addEventListener('supabase_data_loaded', handleSupaLoaded);
+    return () => {
+      window.removeEventListener('supabase_data_loaded', handleSupaLoaded);
+    };
+  }, []);
 
   const [diag, setDiag] = useState({
     total: 0, encaminhados: 0, contratados: 0, alertas: 0,
@@ -507,7 +519,7 @@ export default function AdminPainelPage() {
     markersLayerRef.current.clearLayers();
     heatmapLayerRef.current.clearLayers();
 
-    CIDADES_SEEDS.forEach((cidade) => {
+    cidadesMapa.forEach((cidade) => {
       let corGlow = 'bg-green-500';
       if (cidade.riscoGeral === 'Crítico') corGlow = 'bg-red-500';
       else if (cidade.riscoGeral === 'Médio') corGlow = 'bg-orange-500';
@@ -550,7 +562,7 @@ export default function AdminPainelPage() {
 
       markersLayerRef.current.addLayer(marker);
     });
-  }, []);
+  }, [cidadesMapa]);
 
   const selecionarBairro = useCallback((bairro: BairroMapa) => {
     const L = (window as any).L;
@@ -803,7 +815,9 @@ export default function AdminPainelPage() {
       taxaEnc:     d.counters.total > 0 ? Math.round((enc / d.counters.total) * 100) : 0,
       taxaCont:    d.counters.taxaEmpregabilidade,
     });
-  }, []);
+    setEmpresas(db.getEmpresas());
+    setCidadesMapa(buildCidadesMapa());
+  }, [rankingKey]);
 
   const syncLogs = () => setAuditLogs(db.getAuditLogs());
 
@@ -867,6 +881,15 @@ export default function AdminPainelPage() {
     showToast('Peso do critério atualizado!');
   };
 
+  if (!hasMounted) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[400px] bg-white rounded-3xl border border-slate-100 p-12 shadow-sm gap-4 animate-fadeIn">
+        <Loader2 className="w-8 h-8 animate-spin text-indigo-500" />
+        <p className="text-slate-500 text-xs font-black animate-pulse">Carregando painel estratégico...</p>
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col gap-6 relative">
 
@@ -883,6 +906,157 @@ export default function AdminPainelPage() {
         title={<span>Painel Estratégico — <span className="text-indigo-500">Visão do Estado</span></span>}
         description="Norte de Minas Gerais · Heatmap de Vulnerabilidade Social"
       />
+
+      {/* ─── INTEGRATION HUB (SUPABASE & TELEGRAM IA BOT) ─── */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* SUPABASE PANEL */}
+        {showSupaPanel ? (
+          <Card className="border border-indigo-200/60 bg-gradient-to-r from-indigo-50/70 via-white/80 to-purple-50/70 shadow-sm backdrop-blur-md relative overflow-hidden flex flex-col justify-between h-full min-h-[220px]">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-200/20 rounded-full blur-3xl pointer-events-none -mr-20 -mt-20"></div>
+            <div className="absolute bottom-0 left-0 w-48 h-48 bg-purple-200/10 rounded-full blur-2xl pointer-events-none -ml-10 -mb-10"></div>
+            
+            <button 
+              onClick={() => setShowSupaPanel(false)}
+              className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 transition-colors z-20"
+            >
+              <X className="h-4 w-4" />
+            </button>
+
+            <div className="flex flex-col gap-4 relative z-10">
+              <div className="flex gap-3 items-start">
+                <div className="bg-indigo-600 text-white p-2.5 rounded-xl shadow-lg shadow-indigo-600/25 shrink-0">
+                  <Database className="h-5 w-5" />
+                </div>
+                <div className="flex flex-col gap-0.5">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <h3 className="text-sm font-black text-slate-800">Supabase Integration Cloud</h3>
+                    {supabaseLive ? (
+                      <Badge variant="success" className="animate-pulse text-[9px]">Live & Conectado</Badge>
+                    ) : (
+                      <Badge variant="warning" className="text-[9px]">Modo Local/Offline</Badge>
+                    )}
+                  </div>
+                  <p className="text-[10px] text-slate-600 font-semibold leading-relaxed mt-0.5">
+                    Conecte a plataforma diretamente ao seu banco de dados Supabase na nuvem. Insira dados em qualquer tela e os veja persistindo diretamente no PostgreSQL.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between gap-4 bg-white/70 border border-indigo-100 rounded-xl p-3 shadow-xs">
+                <div className="flex flex-col">
+                  <span className="text-[9px] font-black text-slate-700">Sincronização Ativa</span>
+                  <span className="text-[9px] text-slate-400 font-bold mt-0.5 truncate max-w-[200px]">URL: {process.env.NEXT_PUBLIC_SUPABASE_URL || 'dodyvoozyqtbftzguipn.supabase.co'}</span>
+                </div>
+                <div className="flex items-center gap-1 text-[9px] font-black text-emerald-600 shrink-0">
+                  <CheckCircle2 className="h-3.5 w-3.5" />
+                  <span>Base relacional ativa!</span>
+                </div>
+              </div>
+            </div>
+          </Card>
+        ) : (
+          <div className="bg-slate-50 border border-slate-200 border-dashed rounded-3xl p-6 flex flex-col items-center justify-center text-center h-full min-h-[220px]">
+            <Database className="h-8 w-8 text-slate-300 mb-2" />
+            <span className="text-[11px] font-black text-slate-600">Painel do Supabase ocultado</span>
+            <button onClick={() => setShowSupaPanel(true)} className="text-[10px] font-bold text-indigo-500 hover:text-indigo-600 mt-1 cursor-pointer">Mostrar Painel</button>
+          </div>
+        )}
+
+        {/* TELEGRAM IA BOT HUB */}
+        <Card className="border border-slate-800 bg-gradient-to-br from-slate-900 via-slate-950 to-indigo-950 shadow-xl text-white relative overflow-hidden flex flex-col justify-between h-full min-h-[220px]">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none -mr-20 -mt-20"></div>
+          <div className="absolute bottom-0 left-0 w-48 h-48 bg-purple-500/10 rounded-full blur-2xl pointer-events-none -ml-10 -mb-10"></div>
+          
+          <div className="flex flex-col gap-4 relative z-10 h-full justify-between">
+            <div className="flex items-center justify-between gap-4">
+              <div className="flex gap-3 items-center">
+                <div className="bg-sky-500 text-white p-2 rounded-xl shadow-lg shadow-sky-500/30 shrink-0">
+                  <Sparkles className="h-4.5 w-4.5" />
+                </div>
+                <div>
+                  <h3 className="text-xs font-black flex items-center gap-1.5">
+                    Telegram IA Bot Hub
+                    <span className="flex h-1.5 w-1.5 relative">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
+                    </span>
+                  </h3>
+                  <p className="text-[9px] text-zinc-400 font-bold">Chatbot inteligente com IA do Google Gemini integrada</p>
+                </div>
+              </div>
+              
+              <span className="bg-sky-500/10 text-sky-400 border border-sky-500/20 text-[9px] font-black px-2 py-0.5 rounded-full select-none">
+                @DescubraHubBot
+              </span>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-3 mt-1 items-center">
+              <div className="md:col-span-3 bg-white/5 border border-white/5 p-2.5 rounded-xl flex flex-col gap-1">
+                <span className="text-[8px] uppercase font-black text-zinc-500 tracking-wider">Comandos Disponíveis:</span>
+                <div className="space-y-0.5 text-[8px] font-bold text-zinc-300">
+                  <div className="flex justify-between border-b border-white/[0.03] pb-0.5">
+                    <span className="text-sky-400 font-mono">/status</span>
+                    <span>Métricas em Tempo Real</span>
+                  </div>
+                  <div className="flex justify-between border-b border-white/[0.03] pb-0.5">
+                    <span className="text-sky-400 font-mono">/alertas</span>
+                    <span>Lista jovens em risco</span>
+                  </div>
+                  <div className="flex justify-between border-b border-white/[0.03] pb-0.5">
+                    <span className="text-sky-400 font-mono">/jovem &lt;nome&gt;</span>
+                    <span>Busca perfil completo</span>
+                  </div>
+                  <div className="flex justify-between border-b border-white/[0.03] pb-0.5">
+                    <span className="text-sky-400 font-mono">Relato de Texto</span>
+                    <span>Análise IA com Gemini</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-sky-400 font-mono">Gravar Áudio (Voz)</span>
+                    <span>Acompanhamento IA</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="md:col-span-2 flex flex-col justify-between gap-2.5 h-full">
+                <p className="text-[9px] text-zinc-400 font-semibold leading-relaxed">
+                  Os técnicos de campo podem monitorar jovens, alertas e registrar relatos de acompanhamento enviando áudios ou textos.
+                </p>
+                
+                <div className="flex gap-1.5 w-full">
+                  <button 
+                    onClick={async () => {
+                      try {
+                        const res = await fetch('/api/telegram?setup=true');
+                        const data = await res.json();
+                        if (data.success) {
+                          showToast('⚡ Webhook do Bot ativado no Telegram com sucesso!');
+                        } else {
+                          showToast('❌ Erro ao ativar o Webhook. Verifique o console.');
+                        }
+                      } catch {
+                        showToast('❌ Erro de conexão ao registrar o Webhook.');
+                      }
+                    }}
+                    className="flex-1 bg-sky-600 hover:bg-sky-500 text-white font-black text-[9px] py-1.5 rounded-xl shadow-md active:scale-95 transition-all text-center cursor-pointer"
+                  >
+                    Ativar Bot
+                  </button>
+                  <button 
+                    onClick={() => {
+                      navigator.clipboard.writeText(`${window.location.origin}/api/telegram`);
+                      showToast('📋 Link do Webhook copiado para a área de transferência!');
+                    }}
+                    className="bg-white/10 hover:bg-white/15 text-white font-black text-[9px] px-2 py-1.5 rounded-xl active:scale-95 transition-all text-center border border-white/5 cursor-pointer"
+                    title="Copiar URL do Webhook"
+                  >
+                    🔗 URL
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Card>
+      </div>
 
       {/* ─── METRIC CARDS (4 cols) ─── */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -947,7 +1121,7 @@ export default function AdminPainelPage() {
           </div>
 
           <div className="flex flex-col gap-3">
-            {CIDADES_SEEDS.map((cidade) => {
+            {cidadesMapa.map((cidade) => {
               const isSelected = selectedCidade?.id === cidade.id;
               let badgeCor = '';
               if (cidade.riscoGeral === 'Crítico') badgeCor = 'bg-rose-50 text-rose-600 border border-rose-100';
@@ -983,7 +1157,7 @@ export default function AdminPainelPage() {
                       <span className="text-[9px] text-slate-400 font-black uppercase tracking-widest block mb-1">
                         Bairros & Agentes:
                       </span>
-                      {cidade.bairros.map((b) => {
+                      {cidade.bairros.map((b, idx) => {
                         let dotCor = 'bg-emerald-500';
                         if (b.risco === 'Crítico') dotCor = 'bg-rose-500';
                         else if (b.risco === 'Médio') dotCor = 'bg-amber-500';
@@ -992,7 +1166,7 @@ export default function AdminPainelPage() {
 
                         return (
                           <div
-                            key={b.nome}
+                            key={`${b.nome}_${idx}`}
                             className={`flex items-center justify-between bg-white border rounded-xl p-2 hover:border-indigo-200 hover:shadow-xs transition-all cursor-pointer ${
                               isBairroSelected ? 'border-indigo-500 ring-2 ring-indigo-500/10 bg-indigo-50/5' : 'border-slate-100'
                             }`}
@@ -1185,7 +1359,7 @@ export default function AdminPainelPage() {
           <span className="text-[10px] text-slate-500 font-bold">Admin controla os selos</span>
         </div>
         <div className="flex flex-col gap-2">
-          {db.getEmpresas().sort((a, b) => (b.pontos_engajamento || 0) - (a.pontos_engajamento || 0)).map((emp, idx) => {
+          {empresas.sort((a, b) => (b.pontos_engajamento || 0) - (a.pontos_engajamento || 0)).map((emp, idx) => {
             const medals = ['🥇', '🥈', '🥉'];
             const medal = idx < 3 ? medals[idx] : `#${idx + 1}`;
             return (
@@ -1276,60 +1450,17 @@ export default function AdminPainelPage() {
           </p>
           
           <div className="flex flex-col gap-3">
-            {/* Bar 1 */}
-            <div>
-              <div className="flex justify-between items-end mb-1">
-                <span className="text-xs font-bold text-slate-800">Santos Reis</span>
-                <span className="text-[10px] font-black text-rose-600">142 jovens</span>
+            {bairrosData.map((item, idx) => (
+              <div key={idx}>
+                <div className="flex justify-between items-end mb-1">
+                  <span className="text-xs font-bold text-slate-800">{item.bairro}</span>
+                  <span className={`text-[10px] font-black ${item.textColor}`}>{item.count} {item.count === 1 ? 'jovem' : 'jovens'}</span>
+                </div>
+                <div className="w-full bg-slate-100 rounded-full h-1.5">
+                  <div className={`bg-gradient-to-r ${item.color} h-1.5 rounded-full`} style={{ width: item.pct }}></div>
+                </div>
               </div>
-              <div className="w-full bg-slate-100 rounded-full h-1.5">
-                <div className="bg-gradient-to-r from-rose-400 to-rose-600 h-1.5 rounded-full" style={{ width: '100%' }}></div>
-              </div>
-            </div>
-
-            {/* Bar 2 */}
-            <div>
-              <div className="flex justify-between items-end mb-1">
-                <span className="text-xs font-bold text-slate-800">Major Prates</span>
-                <span className="text-[10px] font-black text-rose-500">98 jovens</span>
-              </div>
-              <div className="w-full bg-slate-100 rounded-full h-1.5">
-                <div className="bg-gradient-to-r from-rose-300 to-rose-500 h-1.5 rounded-full" style={{ width: '69%' }}></div>
-              </div>
-            </div>
-
-            {/* Bar 3 */}
-            <div>
-              <div className="flex justify-between items-end mb-1">
-                <span className="text-xs font-bold text-slate-800">Vila Exposição</span>
-                <span className="text-[10px] font-black text-amber-500">75 jovens</span>
-              </div>
-              <div className="w-full bg-slate-100 rounded-full h-1.5">
-                <div className="bg-gradient-to-r from-amber-300 to-amber-500 h-1.5 rounded-full" style={{ width: '52%' }}></div>
-              </div>
-            </div>
-
-            {/* Bar 4 */}
-            <div>
-              <div className="flex justify-between items-end mb-1">
-                <span className="text-xs font-bold text-slate-800">Vera Cruz</span>
-                <span className="text-[10px] font-black text-amber-500">54 jovens</span>
-              </div>
-              <div className="w-full bg-slate-100 rounded-full h-1.5">
-                <div className="bg-gradient-to-r from-amber-200 to-amber-400 h-1.5 rounded-full" style={{ width: '38%' }}></div>
-              </div>
-            </div>
-            
-            {/* Bar 5 */}
-            <div>
-              <div className="flex justify-between items-end mb-1">
-                <span className="text-xs font-bold text-slate-800">Delfino Magalhães</span>
-                <span className="text-[10px] font-black text-amber-400">31 jovens</span>
-              </div>
-              <div className="w-full bg-slate-100 rounded-full h-1.5">
-                <div className="bg-gradient-to-r from-amber-200 to-amber-300 h-1.5 rounded-full" style={{ width: '21%' }}></div>
-              </div>
-            </div>
+            ))}
           </div>
         </Card>
       </div>

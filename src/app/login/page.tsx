@@ -102,7 +102,6 @@ export default function LoginPage() {
             </div>
             <div>
               <h1 className="text-white text-2xl font-black tracking-tight">Descubra Hub</h1>
-              <p className="text-indigo-300 text-xs font-bold uppercase tracking-widest">Pirapora • MG</p>
             </div>
           </div>
 

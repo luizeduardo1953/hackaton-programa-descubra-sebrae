@@ -106,6 +106,10 @@ export default function TecnicosEncaminhamentoPage() {
   const [empresasList, setEmpresasList] = useState<Company[]>([]);
   const [youthList, setYouthList] = useState<Youth[]>([]);
 
+  // Searchable autocomplete prediction state
+  const [youthSearch, setYouthSearch] = useState('');
+  const [showDropdown, setShowDropdown] = useState(false);
+
   useEffect(() => {
     const youths = db.getYouthList();
     const vacancies = db.getVagas();
@@ -135,6 +139,7 @@ export default function TecnicosEncaminhamentoPage() {
     setReferredIds(prev => new Set([...prev, key]));
     setManualYouth('');
     setManualVaga('');
+    setYouthSearch('');
     setManualJustification('');
     showToast(`✅ Jovem indicado manualmente para a vaga com sucesso!`);
     // Reload matches to reflect new referral
@@ -153,6 +158,15 @@ export default function TecnicosEncaminhamentoPage() {
     setReferredIds(prev => new Set([...prev, key]));
     showToast(`✅ ${card.youth.nome_completo.split(' ')[0]} encaminhado para "${card.vacancy.cargo}" na ${card.company.nome_fantasia}!`);
   };
+
+  // Filter youth list for searchable autocomplete indication
+  const filteredYouthsForSearch = youthList
+    .filter(y => y.status_atual === 'Pendente' || y.status_atual === 'Em Curso')
+    .filter(y => {
+      if (!youthSearch) return true;
+      const term = youthSearch.toLowerCase();
+      return y.nome_completo.toLowerCase().includes(term) || y.cpf.includes(term);
+    });
 
   // Filter logic
   const bairros = ['Todos', ...Array.from(new Set(matches.map(m => m.youth.bairro)))];
@@ -210,18 +224,90 @@ export default function TecnicosEncaminhamentoPage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-          <div className="flex flex-col gap-1">
+          <div className="flex flex-col gap-1 relative">
             <label className="text-[10px] font-extrabold text-slate-500 uppercase">Jovem</label>
-            <select
-              value={manualYouth}
-              onChange={e => setManualYouth(e.target.value)}
-              className="border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-semibold text-slate-800 focus:outline-emerald-500 bg-slate-50"
-            >
-              <option value="">Selecionar jovem...</option>
-              {youthList.filter(y => y.status_atual === 'Pendente' || y.status_atual === 'Em Curso').map(y => (
-                <option key={y.id} value={y.id}>{y.nome_completo}</option>
-              ))}
-            </select>
+            {manualYouth ? (
+              // Beautiful selected youth state card
+              <div className="border border-emerald-200 bg-emerald-50/50 rounded-xl px-3 py-2 flex items-center justify-between text-xs font-semibold text-slate-800 h-[38px] transition-all">
+                <div className="flex items-center gap-2 min-w-0">
+                  <div className="h-5 w-5 rounded-full bg-emerald-600 flex items-center justify-center text-white text-[10px] font-black shrink-0 shadow-sm">
+                    {youthList.find(y => y.id === manualYouth)?.nome_completo.charAt(0).toUpperCase()}
+                  </div>
+                  <span className="truncate text-slate-900 font-bold">
+                    {youthList.find(y => y.id === manualYouth)?.nome_completo}
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setManualYouth('');
+                    setYouthSearch('');
+                  }}
+                  className="text-slate-400 hover:text-rose-600 transition-colors p-1"
+                  title="Remover seleção"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+            ) : (
+              // Search input
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="Digitar nome ou CPF para buscar..."
+                  value={youthSearch}
+                  onChange={e => {
+                    setYouthSearch(e.target.value);
+                    setShowDropdown(true);
+                  }}
+                  onFocus={() => setShowDropdown(true)}
+                  className="border border-slate-200 rounded-xl pl-3 pr-8 py-2 text-xs font-semibold text-slate-800 focus:outline-emerald-500 bg-slate-50 w-full h-[38px] placeholder:text-slate-400"
+                />
+                <div className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">
+                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                </div>
+
+                {/* Dropdown suggestions list */}
+                {showDropdown && (
+                  <>
+                    {/* Backdrop to close dropdown on click outside */}
+                    <div 
+                      className="fixed inset-0 z-40" 
+                      onClick={() => setShowDropdown(false)} 
+                    />
+                    <div className="absolute left-0 right-0 z-50 bg-white border border-slate-200 rounded-2xl shadow-xl max-h-60 overflow-y-auto mt-1 divide-y divide-slate-100 animate-fadeIn">
+                      {filteredYouthsForSearch.length === 0 ? (
+                        <div className="p-3 text-center text-slate-400 text-xs font-semibold">
+                          Nenhum jovem elegível encontrado
+                        </div>
+                      ) : (
+                        filteredYouthsForSearch.map(y => (
+                          <button
+                            key={y.id}
+                            type="button"
+                            onClick={() => {
+                              setManualYouth(y.id);
+                              setYouthSearch(y.nome_completo);
+                              setShowDropdown(false);
+                            }}
+                            className="w-full text-left px-4 py-2 hover:bg-slate-50 transition-colors flex flex-col gap-0.5"
+                          >
+                            <span className="text-xs font-bold text-slate-900">{y.nome_completo}</span>
+                            <span className="text-[10px] text-slate-400 font-semibold">
+                              CPF: {y.cpf} • Score: {y.score_vulnerabilidade} pts • {y.status_atual}
+                            </span>
+                          </button>
+                        ))
+                      )}
+                    </div>
+                  </>
+                )}
+              </div>
+            )}
           </div>
 
           <div className="flex flex-col gap-1">

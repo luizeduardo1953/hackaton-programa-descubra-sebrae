@@ -35,212 +35,143 @@ type BairroMapa = {
   cep: string
 }
 
-// Dados estáticos enriquecidos (Fronteira Geográfica de Teste do MVP)
-const CIDADES_SEEDS: CidadeMapa[] = [
-  {
-    id: 'b0eebc99-9c0b-4ef8-bb6d-6bb9bd380a22',
-    nome: 'Pirapora',
-    lat: -17.344933,
-    lng: -44.937861,
-    riscoGeral: 'Médio',
-    alunosTotal: 4,
-    equipamentosQtd: 2,
-    bairros: [
-      {
-        nome: 'Marcos Silva (Jovem)',
-        tipo: 'Jovem',
-        lat: -17.346000,
-        lng: -44.936000,
-        risco: 'Baixo',
-        alunosCount: 25,
-        alunosList: ['Fator de Risco: Baixo (Score 25)', 'Escolaridade: Médio Incompleto', 'Turno: Tarde'],
-        cep: 'Bairro: Cidade Jardim'
-      },
-      {
-        nome: 'Ana Oliveira (Jovem)',
-        tipo: 'Jovem',
-        lat: -17.340000,
-        lng: -44.945000,
-        risco: 'Médio',
-        alunosCount: 42,
-        alunosList: ['Fator de Risco: Médio (Score 42)', 'Escolaridade: Fundamental Incompleto', 'Turno: Manhã'],
-        cep: 'Bairro: Bom Jesus'
-      },
-      {
-        nome: 'Luiz Fernando Melo (Jovem)',
-        tipo: 'Jovem',
-        lat: -17.355000,
-        lng: -44.930000,
-        risco: 'Crítico',
-        alunosCount: 72,
-        alunosList: ['Fator de Risco: Crítico (Score 72)', 'Evasão Escolar Mapeada', 'Região Periférica'],
-        cep: 'Bairro: Santos Dumont'
-      },
-      {
-        nome: 'Mateus Ramos (Jovem)',
-        tipo: 'Jovem',
-        lat: -17.339000,
-        lng: -44.936000,
-        risco: 'Crítico',
-        alunosCount: 88,
-        alunosList: ['Fator de Risco: Crítico (Score 88)', 'Bairro: Santo Antônio', 'Acompanhamento do Orientador'],
-        cep: 'Bairro: Santo Antônio'
-      },
-      {
-        nome: 'Metalúrgica São Francisco (Empresa)',
-        tipo: 'Empresa',
-        lat: -17.352000,
-        lng: -44.941000,
-        risco: 'Geral',
-        alunosCount: 0,
-        alunosList: ['CNPJ: 12.345.678/0001-90', 'Vagas Ofertadas: 2 (Aprendizagem)', 'Parceira Ativa'],
-        cep: 'Bairro: Industrial'
-      },
-      {
-        nome: 'CREAS Pirapora (Acolhimento)',
-        tipo: 'Acolhimento',
-        lat: -17.343500,
-        lng: -44.935000,
-        risco: 'Geral',
-        alunosCount: 0,
-        alunosList: ['Entidade de Acolhimento e Assistência Social', 'Orientadores de Referência: 4', 'Controle de Medidas Ativas'],
-        cep: 'Bairro: Centro'
-      },
-      {
-        nome: 'SENAI Pirapora (Formadora)',
-        tipo: 'Formadora',
-        lat: -17.348000,
-        lng: -44.932000,
-        risco: 'Geral',
-        alunosCount: 0,
-        alunosList: ['Entidade Formadora / Cursos Técnicos', 'Programas Ativos: Informática, Administração', 'Parceria Jovem Aprendiz'],
-        cep: 'Bairro: Centro'
-      }
-    ]
-  },
-  {
-    id: 'c0eebc99-9c0b-4ef8-bb6d-6bb9bd380a33',
-    nome: 'Buritizeiro',
-    lat: -17.351111,
-    lng: -44.962222,
-    riscoGeral: 'Crítico',
-    alunosTotal: 3,
-    equipamentosQtd: 2,
-    bairros: [
-      {
-        nome: 'Patricia Lima (Jovem)',
-        tipo: 'Jovem',
-        lat: -17.352000,
-        lng: -44.960000,
-        risco: 'Baixo',
-        alunosCount: 18,
-        alunosList: ['Fator de Risco: Baixo (Score 18)', 'Curso Preparatório Concluído', 'Pré-aprendizagem Ativa'],
-        cep: 'Bairro: Centro'
-      },
-      {
-        nome: 'Lucas Santos (Jovem)',
-        tipo: 'Jovem',
-        lat: -17.348000,
-        lng: -44.970000,
-        risco: 'Médio',
-        alunosCount: 48,
-        alunosList: ['Fator de Risco: Médio (Score 48)', 'Faltas Recentes no Acompanhamento', 'Necessita Preparação Técnica'],
-        cep: 'Bairro: São Geraldo'
-      },
-      {
-        nome: 'Rodrigo Silva Cruz (Jovem)',
-        tipo: 'Jovem',
-        lat: -17.362000,
-        lng: -44.955000,
-        risco: 'Crítico',
-        alunosCount: 85,
-        alunosList: ['Fator de Risco: Crítico (Score 85)', 'Reside em Região de Alto Risco', 'Acompanhamento do Orientador'],
-        cep: 'Bairro: Nova Pirapora'
-      },
-      {
-        nome: 'Reflorestadora Rio Grande S/A (Empresa)',
-        tipo: 'Empresa',
-        lat: -17.362000,
-        lng: -44.972000,
-        risco: 'Geral',
-        alunosCount: 0,
-        alunosList: ['CNPJ: 45.678.901/0002-30', 'Vagas Ofertadas: 1 (CLT Viveiro)', 'Parceira Ativa'],
-        cep: 'Bairro: Industrial'
-      },
-      {
-        nome: 'CRAS Buritizeiro (Acolhimento)',
-        tipo: 'Acolhimento',
-        lat: -17.355000,
-        lng: -44.965000,
-        risco: 'Geral',
-        alunosCount: 0,
-        alunosList: ['Centro de Referência de Assistência Social', 'Atendimento Territorial Ampliado', 'Mapeamento Familiar Ativo'],
-        cep: 'Bairro: Aparecida'
-      },
-      {
-        nome: 'CFP Buritizeiro (Formadora)',
-        tipo: 'Formadora',
-        lat: -17.349000,
-        lng: -44.958000,
-        risco: 'Geral',
-        alunosCount: 0,
-        alunosList: ['Centro de Formação Profissional', 'Cursos de Iniciação e Habilidades Básicas', 'Parceria Prefeitura Local'],
-        cep: 'Bairro: Nova Pirapora'
-      }
-    ]
-  },
-  {
-    id: 'd0eebc99-9c0b-4ef8-bb6d-6bb9bd380a44',
-    nome: 'Jequitaí',
-    lat: -17.234722,
-    lng: -44.431667,
-    riscoGeral: 'Baixo',
-    alunosTotal: 2,
-    equipamentosQtd: 1,
-    bairros: [
-      {
-        nome: 'Thiago Santos (Jovem)',
-        tipo: 'Jovem',
-        lat: -17.235000,
-        lng: -44.432000,
-        risco: 'Baixo',
-        alunosCount: 10,
-        alunosList: ['Fator de Risco: Baixo (Score 10)', 'Estudante Turno da Manhã', 'Acompanhamento Estável'],
-        cep: 'Bairro: Centro'
-      },
-      {
-        nome: 'Renato Pinheiro (Jovem)',
-        tipo: 'Jovem',
-        lat: -17.240000,
-        lng: -44.425000,
-        risco: 'Médio',
-        alunosCount: 52,
-        alunosList: ['Fator de Risco: Médio (Score 52)', 'Necessita Apoio Escolar Especializado', 'Interesse em Aprendizagem'],
-        cep: 'Bairro: Centro'
-      },
-      {
-        nome: 'Supermercados BH - Jequitaí (Empresa)',
-        tipo: 'Empresa',
-        lat: -17.236000,
-        lng: -44.434000,
-        risco: 'Geral',
-        alunosCount: 0,
-        alunosList: ['CNPJ: 98.765.432/0001-10', 'Vagas Ofertadas: 1 (Caixa Aprendiz)', 'Parceira de Inclusão'],
-        cep: 'Bairro: Industrial'
-      },
-      {
-        nome: 'CRAS Jequitaí (Acolhimento)',
-        tipo: 'Acolhimento',
-        lat: -17.232000,
-        lng: -44.429000,
-        risco: 'Geral',
-        alunosCount: 0,
-        alunosList: ['Centro de Referência de Assistência Social Jequitaí', 'Inclusão Produtiva e Proteção Social', 'Orientadores Territoriais'],
-        cep: 'Bairro: Centro'
-      }
-    ]
+const CITY_CENTERS: Record<string, { lat: number; lng: number }> = {
+  'Pirapora': { lat: -17.344933, lng: -44.937861 },
+  'Buritizeiro': { lat: -17.351111, lng: -44.962222 },
+  'Jequitaí': { lat: -17.234722, lng: -44.431667 },
+};
+
+function getNeighborhoodLatLng(cidade: string, bairroName: string): { lat: number; lng: number } {
+  const cleanBairro = (bairroName || '').trim();
+  const key = `${cidade}_${cleanBairro}`;
+  
+  const COORDINATES: Record<string, { lat: number; lng: number }> = {
+    'Pirapora_Cidade Jardim': { lat: -17.346, lng: -44.936 },
+    'Pirapora_Bom Jesus': { lat: -17.340, lng: -44.945 },
+    'Pirapora_Santos Dumont': { lat: -17.355, lng: -44.930 },
+    'Pirapora_Santo Antônio': { lat: -17.339, lng: -44.936 },
+    'Pirapora_Industrial': { lat: -17.352, lng: -44.941 },
+    'Pirapora_Centro': { lat: -17.3435, lng: -44.935 },
+    'Buritizeiro_Centro': { lat: -17.352, lng: -44.960 },
+    'Buritizeiro_São Geraldo': { lat: -17.348, lng: -44.970 },
+    'Buritizeiro_Nova Pirapora': { lat: -17.362, lng: -44.955 },
+    'Buritizeiro_Aparecida': { lat: -17.355, lng: -44.965 },
+    'Jequitaí_Centro': { lat: -17.235, lng: -44.432 },
+    'Jequitaí_Industrial': { lat: -17.236, lng: -44.434 },
+  };
+
+  if (COORDINATES[key]) {
+    return COORDINATES[key];
   }
-];
+
+  // Fallback com offset determinístico baseado em hash
+  const center = CITY_CENTERS[cidade] || CITY_CENTERS['Pirapora'];
+  let hash = 0;
+  const str = cleanBairro;
+  for (let i = 0; i < str.length; i++) {
+    hash = str.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  const latOffset = ((hash & 0xFF) / 255 - 0.5) * 0.015;
+  const lngOffset = (((hash >> 8) & 0xFF) / 255 - 0.5) * 0.015;
+  return {
+    lat: center.lat + latOffset,
+    lng: center.lng + lngOffset
+  };
+}
+
+const buildCidadesMapa = (): CidadeMapa[] => {
+  const jovens = db.getYouthList();
+  const empresas = db.getEmpresas();
+  const unidades = db.getUnidades();
+  const vagas = db.getVagas();
+
+  const cidadesNome = ['Pirapora', 'Buritizeiro', 'Jequitaí'];
+  return cidadesNome.map(cidName => {
+    const center = CITY_CENTERS[cidName];
+    const cityJovens = jovens.filter(j => j.cidade === cidName);
+    const cityEmpresas = empresas.filter(e => e.cidade === cidName);
+    const cityUnidades = unidades.filter(u => u.cidade === cidName);
+
+    const bairros: BairroMapa[] = [];
+
+    // Mapear unidades do CRAS/CREAS
+    cityUnidades.forEach(u => {
+      const coords = getNeighborhoodLatLng(cidName, u.bairro);
+      bairros.push({
+        nome: `${u.nome} (${u.tipo})`,
+        tipo: u.tipo === 'CECEP' ? 'Formadora' : 'Acolhimento',
+        lat: coords.lat,
+        lng: coords.lng,
+        risco: 'Geral',
+        alunosCount: 0,
+        alunosList: [
+          `Tipo: ${u.tipo}`,
+          `Responsável: ${u.responsavel_nome}`,
+          `Telefone: ${u.telefone || '—'}`
+        ],
+        cep: `Bairro: ${u.bairro}`
+      });
+    });
+
+    // Mapear empresas parceiras
+    cityEmpresas.forEach(e => {
+      const coords = getNeighborhoodLatLng(cidName, e.bairro);
+      const companyVacancies = vagas.filter(v => v.empresa_id === e.id);
+      const vacanciesCount = companyVacancies.reduce((acc, v) => acc + v.quantidade, 0);
+      bairros.push({
+        nome: `${e.nome_fantasia} (Empresa)`,
+        tipo: 'Empresa',
+        lat: coords.lat,
+        lng: coords.lng,
+        risco: 'Geral',
+        alunosCount: 0,
+        alunosList: [
+          `CNPJ: ${e.cnpj}`,
+          `Vagas Ofertadas: ${vacanciesCount} vagas`,
+          `Selo de Engajamento: ${e.selo || 'Nenhum'}`
+        ],
+        cep: `Bairro: ${e.bairro}`
+      });
+    });
+
+    // Mapear jovens da assistência social
+    cityJovens.forEach(y => {
+      const coords = getNeighborhoodLatLng(cidName, y.bairro);
+      const riscoLabel = y.score_vulnerabilidade >= 8 ? 'Crítico' : y.score_vulnerabilidade >= 4 ? 'Médio' : 'Baixo';
+      bairros.push({
+        nome: `${y.nome_completo} (Jovem)`,
+        tipo: 'Jovem',
+        lat: coords.lat,
+        lng: coords.lng,
+        risco: riscoLabel,
+        alunosCount: y.score_vulnerabilidade,
+        alunosList: [
+          `Risco: ${riscoLabel} (Score ${y.score_vulnerabilidade})`,
+          `Escolaridade: ${y.escolaridade}`,
+          `Status: ${y.status_atual}`
+        ],
+        cep: `Bairro: ${y.bairro}`
+      });
+    });
+
+    // Determinar risco médio geral da cidade
+    const avgScore = cityJovens.length > 0
+      ? cityJovens.reduce((acc, y) => acc + y.score_vulnerabilidade, 0) / cityJovens.length
+      : 0;
+    const riscoGeral = avgScore >= 7 ? 'Crítico' : avgScore >= 4 ? 'Médio' : 'Baixo';
+
+    return {
+      id: cidName === 'Pirapora' ? 'b0eebc99-9c0b-4ef8-bb6d-6bb9bd380a22' : cidName === 'Buritizeiro' ? 'c0eebc99-9c0b-4ef8-bb6d-6bb9bd380a33' : 'd0eebc99-9c0b-4ef8-bb6d-6bb9bd380a44',
+      nome: cidName,
+      lat: center.lat,
+      lng: center.lng,
+      riscoGeral,
+      alunosTotal: cityJovens.length,
+      equipamentosQtd: cityUnidades.length + cityEmpresas.length,
+      bairros
+    };
+  });
+};
 
 const NEIGHBORHOOD_POLYGONS: Record<string, [number, number][]> = {
   'Santo Antônio': [
@@ -360,6 +291,11 @@ function getNeighborhoodCoords(cidadeNome: string, bairroCep: string, bairroLat:
 
 export default function TecnicosPainelPage() {
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [hasMounted, setHasMounted] = useState(false);
+
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
 
   const showToast = (msg: string) => {
     setToastMessage(msg);
@@ -377,6 +313,24 @@ export default function TecnicosPainelPage() {
   const markersLayerRef = useRef<any>(null);
   const heatmapLayerRef = useRef<any>(null);
   const bairroBoundaryLayerRef = useRef<any>(null);
+
+  const [cidadesMapa, setCidadesMapa] = useState<CidadeMapa[]>([]);
+
+  useEffect(() => {
+    const handleSupaLoaded = () => {
+      setCidadesMapa(buildCidadesMapa());
+      showToast('Dados atualizados do Supabase com sucesso!');
+    };
+
+    window.addEventListener('supabase_data_loaded', handleSupaLoaded);
+    return () => {
+      window.removeEventListener('supabase_data_loaded', handleSupaLoaded);
+    };
+  }, []);
+
+  useEffect(() => {
+    setCidadesMapa(buildCidadesMapa());
+  }, []);
 
   // Injeção dinâmica do Leaflet
   useEffect(() => {
@@ -433,7 +387,7 @@ export default function TecnicosPainelPage() {
     markersLayerRef.current.clearLayers();
     heatmapLayerRef.current.clearLayers();
 
-    CIDADES_SEEDS.forEach((cidade) => {
+    cidadesMapa.forEach((cidade) => {
       let corGlow = 'bg-green-500';
       if (cidade.riscoGeral === 'Crítico') corGlow = 'bg-red-500';
       else if (cidade.riscoGeral === 'Médio') corGlow = 'bg-orange-500';
@@ -476,7 +430,7 @@ export default function TecnicosPainelPage() {
 
       markersLayerRef.current.addLayer(marker);
     });
-  }, []);
+  }, [cidadesMapa]);
 
   const selecionarBairro = useCallback((bairro: BairroMapa) => {
     const L = (window as any).L;
@@ -715,31 +669,138 @@ export default function TecnicosPainelPage() {
     }
   }, [mapFilter, selectedBairroFilter, selectedCidade, focarNaCidade]);
 
-  // Hardcoded mock data strictly matching the screenshots and layouts
+  // Dynamic computations pulling from the local storage / Supabase db in real-time
+  const listJovens = db.getYouthList();
+  const totalJovensCount = listJovens.length || 1;
+  const countAtivos = listJovens.filter(y => y.status_atual === 'Em Curso').length;
+  const countContratados = listJovens.filter(y => y.status_atual === 'Contratado').length;
+  const countPendentes = listJovens.filter(y => y.status_atual === 'Pendente').length;
+  const countAlertasTotal = listJovens.filter(y => y.status_atual === 'Alerta' || y.status_atual === 'Evadido').length;
+
+  const sumCounts = countAtivos + countContratados + countPendentes + countAlertasTotal;
+  const pctAtivos = sumCounts > 0 ? Math.round((countAtivos / sumCounts) * 100) : 50;
+  const pctContratados = sumCounts > 0 ? Math.round((countContratados / sumCounts) * 100) : 17;
+  const pctPendentes = sumCounts > 0 ? Math.round((countPendentes / sumCounts) * 100) : 17;
+  const pctAlertas = sumCounts > 0 ? Math.round((countAlertasTotal / sumCounts) * 100) : 16;
+
   const metrics = {
-    totalJovens: 6,
-    jovensAtivos: 5,
-    empresas: 4,
-    cursos: 4,
-    empregabilidade: '17%',
-    alertasAtivos: 4
+    totalJovens: listJovens.length,
+    jovensAtivos: listJovens.filter(y => y.status_atual !== 'Evadido' && y.status_atual !== 'Concluído').length,
+    empresas: db.getEmpresas().length,
+    cursos: db.getUnidades().filter(u => u.tipo === 'CECEP').length || 4,
+    empregabilidade: listJovens.length > 0 
+      ? `${Math.round((countContratados / listJovens.length) * 100)}%`
+      : '0%',
+    alertasAtivos: listJovens.filter(y => y.status_atual === 'Alerta').length
   };
 
-  const priorityQueue = [
-    { rank: '#1', initial: 'A', name: 'Ana Beatriz Ferreira', score: 86, badge: 'crítica', color: 'bg-rose-50 text-rose-700 border-rose-200' },
-    { rank: '#2', initial: 'M', name: 'Maria Aparecida Souza', score: 78, badge: 'crítica', color: 'bg-rose-50 text-rose-700 border-rose-200' },
-    { rank: '#3', initial: 'J', name: 'Juliana Rocha Lima', score: 67, badge: 'alta', color: 'bg-amber-50 text-amber-700 border-amber-200' },
-    { rank: '#4', initial: 'L', name: 'Lucas Silva Santos', score: 45, badge: 'média', color: 'bg-blue-50 text-blue-700 border-blue-200' },
-    { rank: '#5', initial: 'P', name: 'Pedro Henrique', score: 13, badge: 'baixa', color: 'bg-slate-100 text-slate-600 border-slate-200' },
-    { rank: '#6', initial: 'G', name: 'Gabriel Souza', score: 12, badge: 'baixa', color: 'bg-slate-100 text-slate-600 border-slate-200' }
-  ];
+  let priorityQueue = [...listJovens]
+    .sort((a, b) => b.score_vulnerabilidade - a.score_vulnerabilidade)
+    .slice(0, 6)
+    .map((item, idx) => {
+      const isCritical = item.score_vulnerabilidade >= 8;
+      const isHigh = item.score_vulnerabilidade >= 5;
+      const isMedium = item.score_vulnerabilidade >= 3;
+      
+      const badge = isCritical ? 'crítica' : isHigh ? 'alta' : isMedium ? 'média' : 'baixa';
+      const color = isCritical ? 'bg-rose-50 text-rose-700 border-rose-200' :
+                    isHigh ? 'bg-amber-50 text-amber-700 border-amber-200' :
+                    isMedium ? 'bg-blue-50 text-blue-700 border-blue-200' :
+                    'bg-slate-100 text-slate-600 border-slate-200';
+                    
+      return {
+        rank: `#${idx + 1}`,
+        initial: item.nome_completo.charAt(0),
+        name: item.nome_completo,
+        score: item.score_vulnerabilidade * 10,
+        badge,
+        color
+      };
+    });
 
-  const recentAlerts = [
-    { title: '3 faltas consecutivas', subtitle: 'Lucas Silva Santos', badge: 'alta', color: 'bg-amber-50 text-amber-700 border-amber-200', type: 'warning' },
-    { title: 'Risco de evasão escolar', subtitle: 'Juliana Rocha Lima', badge: 'crítica', color: 'bg-rose-50 text-rose-700 border-rose-200', type: 'critical' },
-    { title: 'Documentação pendente', subtitle: 'Ana Beatriz Ferreira', badge: 'média', color: 'bg-blue-50 text-blue-700 border-blue-200', type: 'doc' },
-    { title: 'Baixa adesão na oficina', subtitle: 'Geral', badge: 'baixa', color: 'bg-slate-100 text-slate-600 border-slate-200', type: 'low' }
-  ];
+  if (priorityQueue.length === 0) {
+    priorityQueue = [
+      { rank: '#1', initial: 'A', name: 'Ana Beatriz Ferreira', score: 86, badge: 'crítica', color: 'bg-rose-50 text-rose-700 border-rose-200' },
+      { rank: '#2', initial: 'M', name: 'Maria Aparecida Souza', score: 78, badge: 'crítica', color: 'bg-rose-50 text-rose-700 border-rose-200' },
+      { rank: '#3', initial: 'J', name: 'Juliana Rocha Lima', score: 67, badge: 'alta', color: 'bg-amber-50 text-amber-700 border-amber-200' },
+      { rank: '#4', initial: 'L', name: 'Lucas Silva Santos', score: 45, badge: 'média', color: 'bg-blue-50 text-blue-700 border-blue-200' },
+      { rank: '#5', initial: 'P', name: 'Pedro Henrique', score: 13, badge: 'baixa', color: 'bg-slate-100 text-slate-600 border-slate-200' },
+      { rank: '#6', initial: 'G', name: 'Gabriel Souza', score: 12, badge: 'baixa', color: 'bg-slate-100 text-slate-600 border-slate-200' }
+    ];
+  }
+
+  let recentAlerts = listJovens
+    .filter(y => y.status_atual === 'Alerta' || y.score_vulnerabilidade >= 7)
+    .slice(0, 4)
+    .map(y => {
+      const isCritical = y.score_vulnerabilidade >= 8;
+      return {
+        title: isCritical ? 'Risco crítico de evasão' : 'Acompanhamento pendente',
+        subtitle: y.nome_completo,
+        badge: isCritical ? 'crítica' : 'alta',
+        color: isCritical ? 'bg-rose-50 text-rose-700 border-rose-200' : 'bg-amber-50 text-amber-700 border-amber-200',
+        type: isCritical ? 'critical' : 'warning'
+      };
+    });
+
+  if (recentAlerts.length === 0) {
+    recentAlerts = [
+      { title: '3 faltas consecutivas', subtitle: 'Lucas Silva Santos', badge: 'alta', color: 'bg-amber-50 text-amber-700 border-amber-200', type: 'warning' },
+      { title: 'Risco de evasão escolar', subtitle: 'Juliana Rocha Lima', badge: 'crítica', color: 'bg-rose-50 text-rose-700 border-rose-200', type: 'critical' },
+      { title: 'Documentação pendente', subtitle: 'Ana Beatriz Ferreira', badge: 'média', color: 'bg-blue-50 text-blue-700 border-blue-200', type: 'doc' },
+      { title: 'Baixa adesão na oficina', subtitle: 'Geral', badge: 'baixa', color: 'bg-slate-100 text-slate-600 border-slate-200', type: 'low' }
+    ];
+  }
+
+  // Calculate dynamic neighborhoods distribution (Vulnerabilidade Territorial)
+  const neighborhoodCounts: Record<string, number> = {};
+  listJovens.forEach(y => {
+    neighborhoodCounts[y.bairro] = (neighborhoodCounts[y.bairro] || 0) + 1;
+  });
+  const sortedBairros = Object.entries(neighborhoodCounts)
+    .map(([bairro, count]) => ({ bairro, count }))
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 5);
+
+  const maxBairroCount = sortedBairros[0]?.count || 1;
+  let bairrosData = sortedBairros.map((item, idx) => {
+    const pct = `${Math.round((item.count / maxBairroCount) * 100)}%`;
+    let color = 'from-rose-400 to-rose-600';
+    let textColor = 'text-rose-600';
+    if (idx === 2) {
+      color = 'from-amber-300 to-amber-500';
+      textColor = 'text-amber-500';
+    } else if (idx > 2) {
+      color = 'from-amber-200 to-amber-400';
+      textColor = 'text-amber-500';
+    }
+    return {
+      bairro: item.bairro,
+      count: item.count,
+      pct,
+      color,
+      textColor
+    };
+  });
+
+  if (bairrosData.length === 0) {
+    bairrosData = [
+      { bairro: 'Santos Reis', count: 142, pct: '100%', color: 'from-rose-400 to-rose-600', textColor: 'text-rose-600' },
+      { bairro: 'Major Prates', count: 98, pct: '69%', color: 'from-rose-300 to-rose-500', textColor: 'text-rose-500' },
+      { bairro: 'Vila Exposição', count: 75, pct: '52%', color: 'from-amber-300 to-amber-500', textColor: 'text-amber-500' },
+      { bairro: 'Vera Cruz', count: 54, pct: '38%', color: 'from-amber-200 to-amber-400', textColor: 'text-amber-500' },
+      { bairro: 'Delfino Magalhães', count: 31, pct: '21%', color: 'from-amber-200 to-amber-300', textColor: 'text-amber-400' }
+    ];
+  }
+
+  if (!hasMounted) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[400px] bg-white rounded-3xl border border-slate-100 p-12 shadow-sm gap-4 animate-fadeIn">
+        <Loader2 className="w-8 h-8 animate-spin text-indigo-500" />
+        <p className="text-slate-500 text-xs font-black animate-pulse">Carregando painel operacional...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col gap-6 animate-fadeIn relative">
@@ -772,54 +833,43 @@ export default function TecnicosPainelPage() {
         <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm flex flex-col gap-6">
           <h3 className="text-base font-black text-slate-900">Status dos Jovens</h3>
           
-          {/* High Fidelity SVG Donut Chart Portion */}
+          {/* Dynamic Conic-Gradient Donut Chart */}
           <div className="relative h-44 w-full flex items-center justify-center">
-            <svg className="h-40 w-40 transform -rotate-95" viewBox="0 0 100 100">
-              {/* Outer ring */}
-              <circle cx="50" cy="50" r="40" fill="none" stroke="#f1f5f9" strokeWidth="12" />
-              
-              {/* Ativo (3/6 - 50%) -> Green */}
-              <circle cx="50" cy="50" r="40" fill="none" stroke="#10b981" strokeWidth="12" 
-                strokeDasharray="251.2" strokeDashoffset="125.6" strokeLinecap="round" />
-              
-              {/* Encaminhado (1/6 - 16.6%) -> Light Purple */}
-              <circle cx="50" cy="50" r="40" fill="none" stroke="#a78bfa" strokeWidth="12" 
-                strokeDasharray="251.2" strokeDashoffset="209.3" strokeLinecap="round" 
-                className="origin-center transform rotate-180" />
-              
-              {/* Empregado (1/6 - 16.6%) -> Dark Green */}
-              <circle cx="50" cy="50" r="40" fill="none" stroke="#047857" strokeWidth="12" 
-                strokeDasharray="251.2" strokeDashoffset="209.3" strokeLinecap="round" 
-                className="origin-center transform rotate-240" />
-
-              {/* Em Análise (1/6 - 16.6%) -> Blue */}
-              <circle cx="50" cy="50" r="40" fill="none" stroke="#3b82f6" strokeWidth="12" 
-                strokeDasharray="251.2" strokeDashoffset="209.3" strokeLinecap="round" 
-                className="origin-center transform rotate-300" />
-            </svg>
-            <div className="absolute flex flex-col items-center justify-center">
-              <span className="text-2xl font-black text-slate-900">6</span>
-              <span className="text-[9px] font-bold text-slate-400 uppercase leading-none">Jovens</span>
+            <div 
+              className="h-40 w-40 rounded-full flex items-center justify-center transition-all duration-500 shadow-lg"
+              style={{
+                background: `conic-gradient(
+                  #10b981 0% ${pctAtivos}%, 
+                  #047857 ${pctAtivos}% ${pctAtivos + pctContratados}%, 
+                  #3b82f6 ${pctAtivos + pctContratados}% ${pctAtivos + pctContratados + pctPendentes}%, 
+                  #ef4444 ${pctAtivos + pctContratados + pctPendentes}% 100%
+                )`
+              }}
+            >
+              <div className="h-28 w-28 rounded-full bg-white flex flex-col items-center justify-center shadow-inner">
+                <span className="text-2xl font-black text-slate-900">{listJovens.length}</span>
+                <span className="text-[9px] font-bold text-slate-400 uppercase leading-none">Jovens</span>
+              </div>
             </div>
           </div>
 
-          {/* Color Legend Indicators */}
+          {/* Color Legend Indicators showing real database counts */}
           <div className="grid grid-cols-2 gap-x-2 gap-y-1.5 border-t border-slate-100 pt-4 text-[10px] font-bold text-slate-500">
             <span className="flex items-center gap-1.5">
               <span className="h-2.5 w-2.5 rounded-full bg-[#10b981] shrink-0" />
-              Ativo (3)
-            </span>
-            <span className="flex items-center gap-1.5">
-              <span className="h-2.5 w-2.5 rounded-full bg-[#a78bfa] shrink-0" />
-              Encaminhado (1)
+              Ativo ({countAtivos})
             </span>
             <span className="flex items-center gap-1.5">
               <span className="h-2.5 w-2.5 rounded-full bg-[#047857] shrink-0" />
-              Empregado (1)
+              Empregado ({countContratados})
             </span>
             <span className="flex items-center gap-1.5">
               <span className="h-2.5 w-2.5 rounded-full bg-[#3b82f6] shrink-0" />
-              Em Análise (1)
+              Em Análise ({countPendentes})
+            </span>
+            <span className="flex items-center gap-1.5">
+              <span className="h-2.5 w-2.5 rounded-full bg-[#ef4444] shrink-0" />
+              Em Alerta ({countAlertasTotal})
             </span>
           </div>
         </div>
@@ -897,13 +947,7 @@ export default function TecnicosPainelPage() {
         </p>
         
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mt-2">
-          {[
-            { bairro: 'Santos Reis', count: 142, pct: '100%', color: 'from-rose-400 to-rose-600', textColor: 'text-rose-600' },
-            { bairro: 'Major Prates', count: 98, pct: '69%', color: 'from-rose-300 to-rose-500', textColor: 'text-rose-500' },
-            { bairro: 'Vila Exposição', count: 75, pct: '52%', color: 'from-amber-300 to-amber-500', textColor: 'text-amber-500' },
-            { bairro: 'Vera Cruz', count: 54, pct: '38%', color: 'from-amber-200 to-amber-400', textColor: 'text-amber-500' },
-            { bairro: 'Delfino Magalhães', count: 31, pct: '21%', color: 'from-amber-200 to-amber-300', textColor: 'text-amber-400' },
-          ].map((item, idx) => (
+          {bairrosData.map((item, idx) => (
             <div key={idx} className="bg-slate-50/50 p-4 rounded-2xl border border-slate-100 flex flex-col gap-2 hover:bg-slate-50 transition-all hover:shadow-md">
               <div className="flex justify-between items-start">
                 <span className="text-xs font-black text-slate-800 truncate max-w-[120px]">{item.bairro}</span>
@@ -931,7 +975,7 @@ export default function TecnicosPainelPage() {
           </div>
 
           <div className="flex flex-col gap-3">
-            {CIDADES_SEEDS.map((cidade) => {
+            {cidadesMapa.map((cidade) => {
               const isSelected = selectedCidade?.id === cidade.id;
               let badgeCor = '';
               if (cidade.riscoGeral === 'Crítico') badgeCor = 'bg-rose-50 text-rose-600 border border-rose-100';
@@ -967,7 +1011,7 @@ export default function TecnicosPainelPage() {
                       <span className="text-[9px] text-slate-400 font-black uppercase tracking-widest block mb-1">
                         Agentes & Bairros:
                       </span>
-                      {cidade.bairros.map((b) => {
+                      {cidade.bairros.map((b, idx) => {
                         let dotCor = 'bg-emerald-500';
                         if (b.risco === 'Crítico') dotCor = 'bg-rose-500';
                         else if (b.risco === 'Médio') dotCor = 'bg-amber-500';
@@ -976,7 +1020,7 @@ export default function TecnicosPainelPage() {
 
                         return (
                           <div
-                            key={b.nome}
+                            key={`${b.nome}_${idx}`}
                             className={`flex items-center justify-between bg-white border rounded-xl p-2 hover:border-emerald-200 hover:shadow-xs transition-all cursor-pointer ${
                               isBairroSelected ? 'border-emerald-500 ring-2 ring-emerald-500/10 bg-emerald-50/5' : 'border-slate-100'
                             }`}

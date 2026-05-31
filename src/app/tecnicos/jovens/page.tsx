@@ -12,6 +12,12 @@ export default function TecnicosJovensPage() {
   const [statusFilter, setStatusFilter] = useState('todos');
   const [yearFilter, setYearFilter] = useState('todos');
   
+  // Advanced filters state
+  const [sexoFilter, setSexoFilter] = useState('todos');
+  const [unidadeFilter, setUnidadeFilter] = useState('todos');
+  const [formadoraFilter, setFormadoraFilter] = useState('todos');
+  const [unidadesList, setUnidadesList] = useState<any[]>([]);
+  
   // Bulk actions selection
   const [selectedForReindication, setSelectedForReindication] = useState<string[]>([]);
   const [reindicationYear, setReindicationYear] = useState<number>(2026);
@@ -19,6 +25,7 @@ export default function TecnicosJovensPage() {
 
   useEffect(() => {
     syncData();
+    setUnidadesList(db.getUnidades());
   }, []);
 
   const syncData = () => {
@@ -44,7 +51,12 @@ export default function TecnicosJovensPage() {
     const matchesSearch = y.nome_completo.toLowerCase().includes(searchQuery.toLowerCase()) || y.cpf.includes(searchQuery);
     const matchesStatus = statusFilter === 'todos' || y.status_atual === statusFilter;
     const matchesYear = yearFilter === 'todos' || y.ano_indicacao.toString() === yearFilter;
-    return matchesSearch && matchesStatus && matchesYear;
+    
+    const matchesSexo = sexoFilter === 'todos' || y.sexo === sexoFilter;
+    const matchesUnidade = unidadeFilter === 'todos' || y.indicado_por_unidade === unidadeFilter;
+    const matchesFormadora = formadoraFilter === 'todos' || y.indicado_por_unidade === formadoraFilter;
+
+    return matchesSearch && matchesStatus && matchesYear && matchesSexo && matchesUnidade && matchesFormadora;
   }).sort((a, b) => b.score_vulnerabilidade - a.score_vulnerabilidade);
 
   return (
@@ -90,6 +102,50 @@ export default function TecnicosJovensPage() {
             <option value="2025">Série 2025</option>
             <option value="2024">Série 2024</option>
           </select>
+
+          {/* Sexo Filter */}
+          <select 
+            value={sexoFilter}
+            onChange={(e) => setSexoFilter(e.target.value)}
+            className="bg-slate-50 border border-slate-200 rounded-2xl px-4 py-2.5 text-xs font-bold text-slate-700 focus:outline-indigo-500"
+          >
+            <option value="todos">Sexo: Todos</option>
+            <option value="F">Feminino</option>
+            <option value="M">Masculino</option>
+            <option value="Outro">Outro</option>
+          </select>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border-t border-slate-100 pt-3">
+          {/* Unidade de Referência Filter */}
+          <div className="flex flex-col gap-1">
+            <label className="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider">Unidade de Referência (CRAS/CREAS)</label>
+            <select 
+              value={unidadeFilter}
+              onChange={(e) => setUnidadeFilter(e.target.value)}
+              className="bg-slate-50 border border-slate-200 rounded-2xl px-4 py-2.5 text-xs font-bold text-slate-700 focus:outline-indigo-500 w-full cursor-pointer"
+            >
+              <option value="todos">Todas as Unidades</option>
+              {unidadesList.filter(u => u.tipo !== 'CECEP').map(u => (
+                <option key={u.id} value={u.id}>{u.nome} ({u.tipo})</option>
+              ))}
+            </select>
+          </div>
+
+          {/* Entidade Formadora Filter */}
+          <div className="flex flex-col gap-1">
+            <label className="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider">Entidade Formadora (CECEP/Ensino)</label>
+            <select 
+              value={formadoraFilter}
+              onChange={(e) => setFormadoraFilter(e.target.value)}
+              className="bg-slate-50 border border-slate-200 rounded-2xl px-4 py-2.5 text-xs font-bold text-slate-700 focus:outline-indigo-500 w-full cursor-pointer"
+            >
+              <option value="todos">Todas as Entidades Formadoras</option>
+              {unidadesList.filter(u => u.tipo === 'CECEP').map(u => (
+                <option key={u.id} value={u.id}>{u.nome}</option>
+              ))}
+            </select>
+          </div>
         </div>
 
         <div className="flex items-center gap-3 flex-wrap">

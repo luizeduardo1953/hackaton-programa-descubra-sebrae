@@ -75,13 +75,13 @@ const selosData = {
     corBg: 'from-slate-50 to-slate-100',
     tagline: 'Foco em gerar o primeiro emprego formal fora das cotas legais obrigatórias.',
     passos: [
-      'Busca de Talentos: Acesse a aba "Candidatos Recomendados" e avalie os perfis de jovens já capacitados.',
-      'Seleção e Entrevista: Use a plataforma para marcar a entrevista e acompanhar o status do candidato.',
+      'Publicação da Vaga: Divulgue sua oportunidade de contratação diretamente na plataforma de forma simples.',
+      'Triagem Assistida: Aguarde o encaminhamento dos candidatos pré-selecionados pela equipe técnica do CRAS/CREAS.',
     ],
     gatilho: 'Ação Prática obrigatória de contratação:',
     gatilhosItens: [
-      'Assinar um contrato de trabalho formal (CLT padrão) ou estágio remunerado com o jovem recomendado.',
-      'Realizar o upload do comprovante de contratação no painel para validação do gestor do CREAS.',
+      'Assinar um contrato de trabalho formal (CLT padrão) ou estágio remunerado com o jovem encaminhado.',
+      'Registrar a contratação na plataforma para validação e homologação do gestor do CREAS.',
     ],
     beneficiosPilares: [
       {
@@ -121,8 +121,8 @@ const selosData = {
     ],
     gatilho: 'Cumprir pelo menos UM critério de alto impacto:',
     gatilhosItens: [
-      'Opção A: Abrir e preencher vagas formais de Jovem Aprendiz (cota legal com SENAI/SEST SENAT) contratando jovens da plataforma.',
-      'Opção B: Contratar intencionalmente jovem marcado com "Prioridade Social / Alta Vulnerabilidade" (tag confidencial do CREAS).',
+      'Opção A: Abrir e preencher vagas formais de Jovem Aprendiz (cota legal com SENAI/SEST SENAT) contratando jovens encaminhados pelo programa.',
+      'Opção B: Contratar intencionalmente jovem de alta vulnerabilidade por meio de encaminhamento confidencial do CREAS.',
     ],
     beneficiosPilares: [
       {

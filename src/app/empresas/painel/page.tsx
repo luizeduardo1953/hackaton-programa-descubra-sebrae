@@ -25,20 +25,6 @@ export default function EmpresasPainelPage() {
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newActionTipo, setNewActionTipo] = useState<CompanyAction['tipo']>('Visita Técnica');
-  const [newActionJovem, setNewActionJovem] = useState('');
-  const [selectedProfile, setSelectedProfile] = useState<(Youth & { vulnerabilidades?: any }) | null>(null);
-
-  const handleSelectProfile = (y: Youth) => {
-    const data = db.getYouthById(y.id);
-    if (data) {
-      setSelectedProfile({
-        ...data.youth,
-        vulnerabilidades: data.vulnerabilities
-      });
-    } else {
-      setSelectedProfile(null);
-    }
-  };
 
   useEffect(() => {
     syncData();
@@ -59,19 +45,12 @@ export default function EmpresasPainelPage() {
     setTimeout(() => setToastMessage(null), 3000);
   };
 
-  const handleEvaluateCandidate = (refId: string, status: Referral['status']) => {
-    db.updateReferralStatus(refId, status, `Avaliado pela empresa em ${new Date().toLocaleDateString('pt-BR')}`);
-    syncData();
-    showToast(status === 'Contratado' ? '🎉 Parabéns! Jovem contratado. Empresa ganhou 500pts (Selo Ouro)!' : 'Candidato recusado.');
-  };
-
   const handleLogAction = (e: React.FormEvent) => {
     e.preventDefault();
     if (empresa) {
-      db.logCompanyAction(empresa.id, newActionJovem || undefined, newActionTipo);
+      db.logCompanyAction(empresa.id, undefined, newActionTipo);
       syncData();
       setIsModalOpen(false);
-      setNewActionJovem('');
       setNewActionTipo('Visita Técnica');
       showToast('Ação registrada com sucesso! Seus pontos foram atualizados.');
     }
@@ -249,257 +228,88 @@ export default function EmpresasPainelPage() {
         </div>
       </Card>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="flex flex-col gap-6">
         
-        {/* COLUMN 1: POSTED VACANCIES (SEBRAE ONLY) */}
-        <div className="lg:col-span-1 flex flex-col gap-4">
-          <h3 className="text-base font-black text-slate-900 flex items-center gap-2">
-            <Briefcase className="h-5 w-5 text-indigo-600 shrink-0" />
-            Nossas Vagas Postadas
-          </h3>
-
-          {vagas.length === 0 ? (
-            <span className="text-xs text-slate-400 italic">Nenhuma vaga cadastrada.</span>
-          ) : (
-            vagas.map(v => (
-              <Card key={v.id} className="!p-5 flex flex-col gap-2 relative group hover:border-indigo-200" glass={false}>
-                <div className="absolute top-4 right-4">
-                  <Badge variant="info">{v.tipo}</Badge>
-                </div>
-                <h4 className="text-sm font-black text-slate-950 mt-1 pr-16">{v.cargo}</h4>
-                <div className="flex flex-col gap-1 border-t border-slate-100 pt-3 mt-1 text-xs font-semibold text-slate-600 leading-relaxed">
-                  <p><strong>Quantidade:</strong> {v.quantidade} vagas</p>
-                  <p><strong>Bolsa:</strong> R$ {v.bolsa_auxilio.toFixed(2)}</p>
-                  <p><strong>Horário:</strong> {v.horario}</p>
-                </div>
-              </Card>
-            ))
-          )}
-        </div>
-
-        {/* COLUMN 2 & 3: MATCHED REFERRALS CANDIDATE VIEWER */}
-        <div className="lg:col-span-2 flex flex-col gap-4">
-          <h3 className="text-base font-black text-slate-900 flex items-center gap-2">
-            <Users className="h-5 w-5 text-indigo-600 shrink-0" />
-            Candidatos Recomendados (Fila de Prioridade)
-          </h3>
-
-          {/* Filtering referrals targeting Sebrae vacancies */}
-          {(() => {
-            const sebraeVagaIds = vagas.map(v => v.id);
-            const sebraeReferrals = referrals.filter(r => sebraeVagaIds.includes(r.vaga_id));
-
-            if (sebraeReferrals.length === 0) {
-              return (
-                <Card className="text-center py-12 text-slate-400" glass={false}>
-                  <Users className="h-10 w-10 mx-auto text-slate-200 mb-2" />
-                  <p className="text-xs font-semibold">Aguardando recomendações dos técnicos do CRAS/CREAS...</p>
-                </Card>
-              );
-            }
-
-            return (
-              <div className="flex flex-col gap-4">
-                {sebraeReferrals.map(r => {
-                  const y = youthList.find(youth => youth.id === r.jovem_id);
-                  const v = vagas.find(vaga => vaga.id === r.vaga_id);
-                  if (!y) return null;
-
-                  const age = new Date().getFullYear() - new Date(y.data_nascimento).getFullYear();
-                  return (
-                    <Card key={r.id} className="!p-5 flex flex-col gap-4 group hover:border-indigo-200" glass={false}>
-                      {/* Candidate info row */}
-                      <div className="flex items-start justify-between gap-4">
-                        <div className="flex items-start gap-4">
-                          <div className="w-12 h-12 bg-indigo-50 border border-indigo-100 rounded-full flex items-center justify-center text-indigo-600 shrink-0 shadow-inner">
-                            <span className="font-black text-lg">{y.nome_completo[0].toUpperCase()}</span>
-                          </div>
-                          <div>
-                            <span className="text-[9px] font-black uppercase text-indigo-600 tracking-wider">Candidato para: {v?.cargo}</span>
-                            <h4 className="text-base font-black text-slate-950 mt-0.5">{y.nome_completo}</h4>
-                            <div className="flex flex-wrap items-center gap-2 mt-1 text-[11px] font-semibold text-slate-500">
-                              <span className="flex items-center gap-1"><Calendar className="h-3 w-3" />{age} anos</span>
-                              <span className="text-slate-300">•</span>
-                              <span className="flex items-center gap-1"><GraduationCap className="h-3 w-3" />{y.escolaridade}</span>
-                              <span className="text-slate-300">•</span>
-                              <span className="flex items-center gap-1"><MapPin className="h-3 w-3" />{y.bairro}</span>
-                            </div>
-                          </div>
-                        </div>
-                        {/* Score badge */}
-                        <div className="shrink-0 flex flex-col items-center bg-indigo-50 border border-indigo-100 rounded-2xl px-3 py-2">
-                          <span className="text-[9px] font-black uppercase text-indigo-500">Score</span>
-                          <span className={`text-lg font-black ${
-                            y.score_vulnerabilidade >= 8 ? 'text-rose-600' :
-                            y.score_vulnerabilidade >= 4 ? 'text-amber-600' : 'text-emerald-600'
-                          }`}>{y.score_vulnerabilidade}</span>
-                        </div>
-                      </div>
-
-                      {/* Action buttons */}
-                      <div className="flex items-center justify-between border-t border-slate-100 pt-3">
-                        <button
-                          onClick={() => handleSelectProfile(y)}
-                          className="flex items-center gap-1.5 text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-3 py-2 rounded-xl text-xs font-black transition-colors"
-                        >
-                          <Eye className="h-3.5 w-3.5" />
-                          Ver Perfil Completo
-                        </button>
-
-                        <div className="flex items-center gap-2">
-                          {r.status === 'Selecionado para Entrevista' ? (
-                            <>
-                              <button 
-                                onClick={() => handleEvaluateCandidate(r.id, 'Recusado pela Empresa')}
-                                className="bg-rose-50 hover:bg-rose-100 text-rose-700 px-3 py-2 rounded-xl text-xs font-black shadow-sm flex items-center gap-1 border border-rose-100 transition-colors"
-                              >
-                                <XCircle className="h-4 w-4" />
-                                Reprovar
-                              </button>
-                              <button 
-                                onClick={() => handleEvaluateCandidate(r.id, 'Contratado')}
-                                className="bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2 rounded-xl text-xs font-black shadow-md flex items-center gap-1 transition-all"
-                              >
-                                <CheckCircle className="h-4 w-4" />
-                                Contratar!
-                              </button>
-                            </>
-                          ) : (
-                            <Badge variant={r.status === 'Contratado' ? 'success' : 'error'}>
-                              {r.status === 'Contratado' ? '✅ Contratado' : '❌ Reprovado'}
-                            </Badge>
-                          )}
-                        </div>
-                      </div>
-                    </Card>
-                  );
-                })}
-              </div>
-            );
-          })()}
-        </div>
-
-      </div>
-
-      {/* ── CANDIDATE PROFILE MODAL ── */}
-      {selectedProfile && (
-        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-slate-950/70 backdrop-blur-sm" onClick={() => setSelectedProfile(null)} />
-          <div className="bg-white w-full max-w-lg rounded-[2rem] shadow-2xl relative z-10 overflow-hidden animate-fadeIn flex flex-col max-h-[90vh]">
-            {/* Header */}
-            <div className="bg-gradient-to-r from-indigo-900 to-indigo-800 p-6 relative flex items-center gap-4">
-              <div className="w-16 h-16 rounded-full bg-white/20 border-2 border-white/30 flex items-center justify-center text-white text-2xl font-black shrink-0">
-                {selectedProfile.nome_completo[0].toUpperCase()}
-              </div>
-              <div className="flex-1">
-                <p className="text-indigo-300 text-[10px] font-black uppercase tracking-widest">Perfil do Candidato</p>
-                <h3 className="text-white text-xl font-black leading-tight mt-0.5">{selectedProfile.nome_completo}</h3>
-                <div className="flex items-center gap-2 mt-1">
-                  <span className={`text-[9px] font-black px-2 py-0.5 rounded-full ${
-                    selectedProfile.status_atual === 'Pendente' ? 'bg-amber-400/20 text-amber-300' :
-                    selectedProfile.status_atual === 'Em Curso' ? 'bg-emerald-400/20 text-emerald-300' :
-                    'bg-rose-400/20 text-rose-300'
-                  }`}>{selectedProfile.status_atual}</span>
-                  <span className="text-indigo-300 text-[10px] font-semibold">{selectedProfile.bairro} · Pirapora/MG</span>
-                </div>
-              </div>
-              <button onClick={() => setSelectedProfile(null)} className="absolute top-4 right-4 bg-white/10 hover:bg-white/20 p-2 rounded-xl text-white transition-colors">
-                <X className="h-4 w-4" />
-              </button>
-            </div>
-
-            {/* Body */}
-            <div className="overflow-y-auto p-6 flex flex-col gap-5">
-              {/* Stats row */}
-              <div className="grid grid-cols-3 gap-3">
-                <div className="bg-slate-50 rounded-2xl p-3 text-center border border-slate-100">
-                  <p className="text-[9px] font-black uppercase text-slate-400">Idade</p>
-                  <p className="text-xl font-black text-slate-900 mt-0.5">
-                    {new Date().getFullYear() - new Date(selectedProfile.data_nascimento).getFullYear()}
-                  </p>
-                  <p className="text-[9px] text-slate-400 font-semibold">anos</p>
-                </div>
-                <div className={`rounded-2xl p-3 text-center border ${
-                  selectedProfile.score_vulnerabilidade >= 8 ? 'bg-rose-50 border-rose-100' :
-                  selectedProfile.score_vulnerabilidade >= 4 ? 'bg-amber-50 border-amber-100' : 'bg-emerald-50 border-emerald-100'
-                }`}>
-                  <p className="text-[9px] font-black uppercase text-slate-400">Vulnerab.</p>
-                  <p className={`text-xl font-black mt-0.5 ${
-                    selectedProfile.score_vulnerabilidade >= 8 ? 'text-rose-600' :
-                    selectedProfile.score_vulnerabilidade >= 4 ? 'text-amber-600' : 'text-emerald-600'
-                  }`}>{selectedProfile.score_vulnerabilidade}</p>
-                  <p className="text-[9px] text-slate-400 font-semibold">score</p>
-                </div>
-                <div className="bg-indigo-50 rounded-2xl p-3 text-center border border-indigo-100">
-                  <p className="text-[9px] font-black uppercase text-slate-400">Sexo</p>
-                  <p className="text-xl font-black text-indigo-700 mt-0.5">{selectedProfile.sexo}</p>
-                  <p className="text-[9px] text-slate-400 font-semibold">{selectedProfile.cor_raca}</p>
-                </div>
-              </div>
-
-              {/* Personal data */}
-              <div className="flex flex-col gap-2">
-                <p className="text-[10px] font-black uppercase text-slate-400 tracking-wider">Dados Pessoais</p>
-                <div className="bg-slate-50 rounded-2xl p-4 grid grid-cols-2 gap-3 border border-slate-100">
-                  <div>
-                    <p className="text-[9px] font-bold text-slate-400 uppercase">Escolaridade</p>
-                    <p className="text-xs font-black text-slate-800 mt-0.5 flex items-center gap-1"><GraduationCap className="h-3 w-3 text-indigo-500" />{selectedProfile.escolaridade}</p>
-                  </div>
-                  <div>
-                    <p className="text-[9px] font-bold text-slate-400 uppercase">Bairro</p>
-                    <p className="text-xs font-black text-slate-800 mt-0.5 flex items-center gap-1"><MapPin className="h-3 w-3 text-indigo-500" />{selectedProfile.bairro}</p>
-                  </div>
-                  {selectedProfile.telefone && (
-                    <div>
-                      <p className="text-[9px] font-bold text-slate-400 uppercase">Telefone</p>
-                      <p className="text-xs font-black text-slate-800 mt-0.5 flex items-center gap-1"><Phone className="h-3 w-3 text-emerald-500" />{selectedProfile.telefone}</p>
-                    </div>
-                  )}
-                  <div>
-                    <p className="text-[9px] font-bold text-slate-400 uppercase">Responsável</p>
-                    <p className="text-xs font-black text-slate-800 mt-0.5">{selectedProfile.nome_responsavel || '—'}</p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Social factors */}
-              <div className="flex flex-col gap-2">
-                <p className="text-[10px] font-black uppercase text-slate-400 tracking-wider">Fatores Sociais</p>
-                <div className="grid grid-cols-2 gap-2">
-                  {([
-                    { label: 'Bolsa Família', value: selectedProfile.vulnerabilidades?.bolsa_familia },
-                    { label: 'CadÚnico', value: selectedProfile.vulnerabilidades?.cad_unico },
-                    { label: 'Medida Socioeducativa', value: selectedProfile.vulnerabilidades?.medida_socioeducativa, critical: true },
-                    { label: 'Deficiência (PCD)', value: selectedProfile.vulnerabilidades?.deficiencia },
-                    { label: 'Sem Acesso à Internet', value: !selectedProfile.vulnerabilidades?.acesso_internet },
-                    { label: 'Dif. de Transporte', value: selectedProfile.vulnerabilidades?.dificuldade_transporte },
-                    { label: 'Abandonou Escola', value: selectedProfile.vulnerabilidades?.abandonou_escola, critical: true },
-                    { label: 'Acomp. Psicológico', value: selectedProfile.vulnerabilidades?.acompanhamento_psicologico },
-                  ] as {label: string; value: boolean | undefined; critical?: boolean}[]).map(f => (
-                    <div key={f.label} className={`flex items-center gap-2 p-2.5 rounded-xl border text-[10px] font-bold ${
-                      f.value 
-                        ? (f.critical ? 'bg-rose-50 border-rose-100 text-rose-700' : 'bg-amber-50 border-amber-100 text-amber-800')
-                        : 'bg-slate-50 border-slate-100 text-slate-400'
-                    }`}>
-                      <div className={`w-2 h-2 rounded-full shrink-0 ${
-                        f.value ? (f.critical ? 'bg-rose-500' : 'bg-amber-400') : 'bg-slate-300'
-                      }`} />
-                      {f.label}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Footer */}
-            <div className="bg-slate-50 border-t border-slate-100 px-6 py-4 flex justify-end">
-              <button onClick={() => setSelectedProfile(null)} className="bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-black px-5 py-2.5 rounded-xl transition-all">
-                Fechar Perfil
-              </button>
-            </div>
+        {/* HEADER & MANAGE ACTION */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-3">
+          <div>
+            <h3 className="text-base font-black text-slate-900 flex items-center gap-2">
+              <Briefcase className="h-5 w-5 text-indigo-600 shrink-0" />
+              Nossas Vagas Publicadas
+            </h3>
+            <p className="text-[11px] text-slate-400 font-semibold mt-0.5">
+              Confira as oportunidades de contratação disponibilizadas por sua empresa.
+            </p>
+          </div>
+          <div className="flex items-center gap-3">
+            <button 
+              onClick={() => setIsModalOpen(true)}
+              className="text-[11px] font-black text-white bg-indigo-600 hover:bg-indigo-750 px-4 py-2.5 rounded-xl shadow-sm transition-all cursor-pointer"
+            >
+              Registrar Ação Social
+            </button>
+            <Link 
+              href="/empresas/vagas" 
+              className="text-[11px] font-black text-indigo-600 hover:text-indigo-855 bg-indigo-50 hover:bg-indigo-100 px-4 py-2.5 rounded-xl border border-indigo-100 transition-all"
+            >
+              Nova Vaga
+            </Link>
           </div>
         </div>
-      )}
+
+        {/* VACANCIES GRID */}
+        {vagas.length === 0 ? (
+          <Card className="text-center py-12 text-slate-400" glass={false}>
+            <Briefcase className="h-10 w-10 mx-auto text-slate-200 mb-2" />
+            <p className="text-xs font-semibold">Nenhuma vaga cadastrada por sua empresa ainda.</p>
+          </Card>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {vagas.map(v => (
+              <Card key={v.id} className="!p-5 flex flex-col justify-between gap-4 relative group hover:border-indigo-300 transition-all hover:shadow-sm" glass={false}>
+                <div>
+                  <div className="flex justify-between items-center gap-2">
+                    <Badge variant={v.status_vaga === 'Aberta' ? 'success' : 'neutral'}>
+                      {v.status_vaga === 'Aberta' ? 'Aberta' : v.status_vaga === 'Preenchida' ? 'Preenchida' : 'Cancelada'}
+                    </Badge>
+                    <span className="text-[10px] font-black uppercase text-indigo-600 tracking-wider font-mono">{v.tipo}</span>
+                  </div>
+                  
+                  <h4 className="text-base font-black text-slate-950 mt-3 group-hover:text-indigo-600 transition-colors">
+                    {v.cargo}
+                  </h4>
+                  
+                  <p className="text-xs font-semibold text-slate-400 mt-1 line-clamp-2 leading-relaxed">
+                    Requisitos: {v.escolaridade_exigida} · Mínimo {v.idade_minima} anos
+                  </p>
+
+                  <div className="flex flex-col gap-2 border-t border-slate-100 pt-3.5 mt-3.5 text-xs font-semibold text-slate-600">
+                    <div className="flex justify-between">
+                      <span className="text-slate-400 font-bold">Quantidade:</span>
+                      <span className="text-slate-800">{v.quantidade} vagas</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-slate-400 font-bold">Bolsa-Auxílio:</span>
+                      <span className="text-slate-900 font-black">R$ {v.bolsa_auxilio.toFixed(2)}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-slate-400 font-bold">Horário:</span>
+                      <span className="text-slate-750 truncate max-w-[160px]">{v.horario}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="border-t border-slate-100 pt-3 flex items-center justify-between text-[11px] text-slate-400 font-semibold">
+                  <span>ID: {v.id.toUpperCase()}</span>
+                  <Link href="/empresas/vagas" className="text-indigo-600 hover:text-indigo-850 font-black flex items-center gap-0.5">
+                    Detalhes Vaga <ArrowRight className="h-3 w-3" />
+                  </Link>
+                </div>
+              </Card>
+            ))}
+          </div>
+        )}
+      </div>
 
       {/* Modal Nova Ação */}
       {isModalOpen && (
@@ -512,7 +322,7 @@ export default function EmpresasPainelPage() {
               <p className="text-slate-400 text-xs mt-1">Acumule pontos e ganhe selos da Assistência Social.</p>
               <button 
                 onClick={() => setIsModalOpen(false)}
-                className="absolute top-4 right-4 bg-white/10 hover:bg-white/20 p-2 rounded-xl text-white transition-colors"
+                className="absolute top-4 right-4 bg-white/10 hover:bg-white/20 p-2 rounded-xl text-white transition-colors cursor-pointer"
               >
                 <X className="h-4 w-4" />
               </button>
@@ -546,28 +356,14 @@ export default function EmpresasPainelPage() {
                     </label>
                   ))}
                   <div className="text-[10px] text-slate-400 font-medium italic p-2">
-                    Nota: A contratação via dashboard gera +500 pts e o Selo Ouro automaticamente!
+                    Nota: O preenchimento e contratações de suas vagas de Jovem Aprendiz são gerenciados e validados pelo CRAS/CREAS administrativamente.
                   </div>
                 </div>
               </div>
 
-              <div className="flex flex-col gap-2">
-                <label className="text-xs font-bold text-slate-700 uppercase tracking-wider">Jovem Participante (Opcional)</label>
-                <select 
-                  value={newActionJovem}
-                  onChange={e => setNewActionJovem(e.target.value)}
-                  className="bg-slate-50 border border-slate-200 text-slate-900 text-sm rounded-2xl focus:ring-indigo-600 focus:border-indigo-600 block w-full p-3 font-semibold outline-none"
-                >
-                  <option value="">Ação com múltiplos jovens ou sem vínculo</option>
-                  {youthList.map(y => (
-                    <option key={y.id} value={y.id}>{y.nome_completo}</option>
-                  ))}
-                </select>
-              </div>
-
               <button 
                 type="submit"
-                className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-black py-4 rounded-2xl shadow-lg shadow-indigo-200 transition-all active:scale-95"
+                className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-black py-4 rounded-2xl shadow-lg shadow-indigo-200 transition-all active:scale-95 cursor-pointer"
               >
                 Registrar e Ganhar Pontos
               </button>
